@@ -1,7 +1,7 @@
 import { getAuthHeaders } from "./authService";
 
 const getBaseUrl = () => {
-  return "https://velora-backend-usq1.onrender.com/api";
+  return "https://crm-pwaw.onrender.com/api";
 };
 
 export const fetchProducts = async (filters = {}) => {

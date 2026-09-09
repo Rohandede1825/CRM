@@ -1,5 +1,5 @@
 const getBaseUrl = () => {
-  return "https://velora-backend-usq1.onrender.com/api";
+  return "https://crm-pwaw.onrender.com";
 };
 
 export const getAuthHeaders = () => {
