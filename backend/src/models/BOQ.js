@@ -87,13 +87,18 @@ const boqSchema = new mongoose.Schema(
       enum: ["Draft", "Pending Approval", "Approved", "Rejected", "Invoiced"],
       default: "Draft"
     },
-    preparedBy: { type: String, default: "Dsofts IT Team" },
+    preparedBy: { type: String, default: "Workspace Team" },
     autoSave: { type: Boolean, default: true },
-    pdfUrl: { type: String, default: "" }
+    pdfUrl: { type: String, default: "" },
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
   },
   { timestamps: true }
 );
 
-boqSchema.index({ boqNumber: 1, enquiryNo: 1, clientName: 1, client: 1 });
+boqSchema.index({ tenantId: 1, boqNumber: 1, enquiryNo: 1, clientName: 1, client: 1 });
 
 export default mongoose.model("BOQ", boqSchema);

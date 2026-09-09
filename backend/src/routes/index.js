@@ -19,8 +19,14 @@ import { getProfile, updateProfile } from "../controllers/authController.js";
 import { protect } from "../middleware/auth.middleware.js";
 
 import erpRoute from "./erp.route.js";
+import tenantRoute from "./tenant.route.js";
+import subscriptionRoute from "./subscription.route.js";
 
 const router = express.Router();
+
+// Mount SaaS Multi-Tenant routes
+router.use("/tenant", tenantRoute);
+router.use("/subscription", subscriptionRoute);
 
 // Mount ERP Suite routes
 router.use("/erp", erpRoute);

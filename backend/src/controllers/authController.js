@@ -2,18 +2,20 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import Customer from "../models/Customer.js";
+import Tenant from "../models/Tenant.js";
 import { sendPasswordResetEmail } from "../services/email.service.js";
 
 const generateAccessToken = (entity, type) => {
   const payload = {
     id: entity._id,
     role: type === "Customer" ? "Customer" : entity.role,
+    tenantId: entity.tenantId || null,
     type,
   };
   return jwt.sign(
     payload,
     process.env.JWT_SECRET || "supersecretjwtkey123",
-    { expiresIn: "1h" }
+    { expiresIn: "7d" }
   );
 };
 
@@ -21,12 +23,13 @@ const generateRefreshToken = (entity, type) => {
   const payload = {
     id: entity._id,
     role: type === "Customer" ? "Customer" : entity.role,
+    tenantId: entity.tenantId || null,
     type,
   };
   return jwt.sign(
     payload,
     process.env.JWT_REFRESH_SECRET || "supersecretjwtrefreshkey123",
-    { expiresIn: "7d" }
+    { expiresIn: "30d" }
   );
 };
 
@@ -139,6 +142,12 @@ export const login = async (req, res) => {
     const accessToken = generateAccessToken(user, "User");
     const refreshToken = generateRefreshToken(user, "User");
 
+    // Fetch tenant if exists
+    let tenant = null;
+    if (user.tenantId) {
+      tenant = await Tenant.findById(user.tenantId);
+    }
+
     // Hide password
     user.password = undefined;
 
@@ -147,6 +156,7 @@ export const login = async (req, res) => {
       message: "Login successful",
       data: {
         user,
+        tenant,
         accessToken,
         refreshToken,
       },

@@ -128,11 +128,16 @@ const componentSchema = new mongoose.Schema(
     sortOrder: {
       type: Number,
       default: 0
-    }
+    },
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
   },
   { timestamps: true }
 );
 
-componentSchema.index({ name: "text", relevantSpace: "text", variant: "text" });
+componentSchema.index({ tenantId: 1, name: "text", relevantSpace: "text", variant: "text" });
 
 export default mongoose.model("Component", componentSchema);

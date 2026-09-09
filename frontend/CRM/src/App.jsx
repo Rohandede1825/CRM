@@ -1,7 +1,9 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AdminLayout from "./components/AdminLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { isAuthenticated } from "./services/authService";
 
+import BrandLanding from "./pages/BrandLanding";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import EnquiryManagement from "./pages/EnquiryManagement";
@@ -23,21 +25,32 @@ import NotificationsCenter from "./pages/NotificationsCenter";
 import UserManagement from "./pages/UserManagement";
 import ActivityAuditLogs from "./pages/ActivityAuditLogs";
 import SettingsManager from "./pages/SettingsManager";
+import BillingManager from "./pages/BillingManager";
 
 function App() {
+  const isAuth = isAuthenticated();
+
   return (
     <Routes>
-      {/* Public Auth Portal */}
+      {/* Default Dsofts IT CRM Brand & Showcase Page */}
+      <Route
+        path="/"
+        element={isAuth ? <Navigate to="/dashboard" replace /> : <BrandLanding />}
+      />
+      <Route path="/portal" element={<BrandLanding />} />
+      <Route path="/brand" element={<BrandLanding />} />
+
+      {/* Public White/Blue Login Page */}
       <Route path="/login" element={<Login />} />
 
-      {/* Protected Velora Luxury ERP Suite */}
+      {/* Protected SaaS CRM Suite */}
       <Route
         path="/*"
         element={
           <ProtectedRoute>
             <AdminLayout>
               <Routes>
-                <Route path="/" element={<Dashboard />} />
+                <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/enquiry" element={<EnquiryManagement />} />
                 <Route path="/enquiry/add" element={<EnquiryManagement />} />
                 <Route path="/leads" element={<EnquiryManagement />} />
@@ -64,7 +77,10 @@ function App() {
                 <Route path="/notifications" element={<NotificationsCenter />} />
                 <Route path="/users" element={<UserManagement />} />
                 <Route path="/settings" element={<SettingsManager />} />
+                <Route path="/billing" element={<BillingManager />} />
+                <Route path="/subscription" element={<BillingManager />} />
                 <Route path="/logs" element={<ActivityAuditLogs />} />
+                <Route path="*" element={<Navigate to="/dashboard" replace />} />
               </Routes>
             </AdminLayout>
           </ProtectedRoute>

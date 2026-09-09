@@ -33,9 +33,16 @@ const companySettingSchema = new mongoose.Schema(
     enableEmailNotifications: { type: Boolean, default: true },
 
     // Terms & Conditions Templates (Stored as JSON string or structured object)
-    termsAndConditions: { type: mongoose.Schema.Types.Mixed, default: {} }
+    termsAndConditions: { type: mongoose.Schema.Types.Mixed, default: {} },
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
   },
   { timestamps: true }
 );
+
+companySettingSchema.index({ tenantId: 1 });
 
 export default mongoose.model("CompanySetting", companySettingSchema);

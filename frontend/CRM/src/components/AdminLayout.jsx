@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -18,9 +18,14 @@ import {
   X,
   LogOut,
   ChevronRight,
-  Crown
+  Crown,
+  CreditCard,
+  Building2,
+  Sparkles,
+  Zap,
 } from "lucide-react";
-import { getCurrentUser, logout } from "../services/authService";
+import { getCurrentUser, getCurrentTenant, logout } from "../services/authService";
+import erpApi from "../services/erpService";
 
 export default function AdminLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -28,22 +33,35 @@ export default function AdminLayout({ children }) {
   const [adminUser] = useState(
     getCurrentUser() || { name: "Admin", email: "admin@dsoftsit.com", role: "Super Admin" }
   );
+  const [tenant, setTenant] = useState(
+    getCurrentTenant() || { name: "Dsofts IT Workspace", plan: "Free" }
+  );
+
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Optionally fetch live subscription status to ensure badge is always synced
+    erpApi.getSubscriptionStatus().then((res) => {
+      if (res?.data) {
+        setTenant((prev) => ({ ...prev, plan: res.data.plan, subscriptionStatus: res.data.subscriptionStatus, daysRemaining: res.data.daysRemaining }));
+      }
+    }).catch(() => {});
+  }, [location.pathname]);
 
   const handleLogout = () => {
     logout();
     navigate("/login");
   };
 
-  // Menu items faithfully reflecting the user reference screenshot
+  // Navigation Items
   const navItems = [
-    { path: "/", name: "Dashboard", icon: <LayoutDashboard size={17} /> },
+    { path: "/dashboard", name: "Dashboard", icon: <LayoutDashboard size={17} />, aliases: ["/"] },
     {
       path: "/enquiry",
       name: "Enquiry",
       icon: <Mail size={17} />,
-      aliases: ["/leads", "/enquiry/add"]
+      aliases: ["/leads", "/enquiry/add"],
     },
     { path: "/boq", name: "BOQ", icon: <FileSpreadsheet size={17} />, aliases: ["/estimates"] },
     { path: "/clients", name: "Client", icon: <Users size={17} /> },
@@ -52,12 +70,12 @@ export default function AdminLayout({ children }) {
     { path: "/invoices", name: "Invoice", icon: <FileText size={17} />, aliases: ["/payments"] },
     { path: "/reports", name: "Reports", icon: <BarChart3 size={17} /> },
     { path: "/tasks", name: "Approvals", icon: <CheckCircle size={17} /> },
-    { path: "/users", name: "User Management", icon: <ShieldCheck size={17} /> },
+    { path: "/users", name: "Team & Roles", icon: <ShieldCheck size={17} /> },
     { path: "/inventory", name: "Library", icon: <Package size={17} />, hasSubmenu: true, aliases: ["/factory"] },
-    { path: "/settings", name: "Settings", icon: <Settings size={17} />, aliases: ["/logs", "/calendar"] }
+    { path: "/billing", name: "Billing & Plans", icon: <CreditCard size={17} />, aliases: ["/subscription"] },
+    { path: "/settings", name: "Settings", icon: <Settings size={17} />, aliases: ["/logs", "/calendar"] },
   ];
 
-  // Helper to determine active title
   const getCurrentPageTitle = () => {
     if (location.pathname.startsWith("/enquiry") || location.pathname.startsWith("/leads")) {
       return location.search.includes("mode=add") ? "Add Enquiry" : "Enquiry";
@@ -68,23 +86,34 @@ export default function AdminLayout({ children }) {
     if (location.pathname.startsWith("/library/component") || location.pathname === "/library" || location.pathname === "/inventory") {
       return "Component";
     }
+    if (location.pathname.startsWith("/billing") || location.pathname.startsWith("/subscription")) {
+      return "Billing & Plans";
+    }
     if (location.pathname.startsWith("/settings")) {
       return "Settings";
     }
     const current = navItems.find(
       (item) => item.path === location.pathname || item.aliases?.includes(location.pathname)
     );
-    return current?.name || "Dsofts IT";
+    return current?.name || tenant?.name || "Dsofts IT";
   };
 
   const isBOQPage = location.pathname.startsWith("/boq") || location.pathname === "/estimates";
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex font-sans antialiased" onClick={() => isProfileOpen && setIsProfileOpen(false)}>
+    <div
+      className="min-h-screen bg-slate-50 text-slate-800 flex font-sans antialiased"
+      onClick={() => isProfileOpen && setIsProfileOpen(false)}
+    >
       {/* Mobile Top Navigation */}
       {!isBOQPage && (
         <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between z-40 shadow-xs">
-          <span className="font-black text-sm text-blue-600 tracking-wider">DSOFTS IT</span>
+          <div className="flex items-center gap-2">
+            <Building2 size={16} className="text-blue-600" />
+            <span className="font-black text-xs text-slate-900 truncate max-w-[160px]">
+              {tenant?.name || "DSOFTS IT"}
+            </span>
+          </div>
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="p-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition"
@@ -94,25 +123,29 @@ export default function AdminLayout({ children }) {
         </div>
       )}
 
-      {/* Sidebar Panel - Clean Executive Royal Blue & White Theme */}
+      {/* Sidebar Panel */}
       <aside
         className={`fixed md:sticky top-0 bottom-0 left-0 w-56 bg-white border-r border-slate-200 flex flex-col justify-between z-40 transition-transform duration-300 md:translate-x-0 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         } h-screen overflow-y-auto select-none shadow-xs`}
       >
         <div>
-          {/* Brand Header */}
-          <div className="p-4 border-b border-slate-100 flex items-center gap-2.5 bg-white">
-            <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white font-black shadow-xs">
-              <Crown size={15} />
-            </div>
-            <div>
-              <h2 className="font-extrabold text-sm text-slate-900 tracking-wider">
-                DSOFTS IT
-              </h2>
-              <span className="text-[9px] text-blue-600 font-extrabold uppercase tracking-widest block">
-                Executive CRM
-              </span>
+          {/* Brand & Workspace Header */}
+          <div className="p-4 border-b border-slate-100 bg-white">
+            <div className="flex items-center gap-2.5">
+              <div className="h-8 w-8 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center text-white font-black shadow-xs flex-shrink-0">
+                <Crown size={15} />
+              </div>
+              <div className="min-w-0 flex-1">
+                <h2 className="font-extrabold text-xs text-slate-900 truncate" title={tenant?.name || "DSOFTS IT"}>
+                  {tenant?.name || "DSOFTS IT"}
+                </h2>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="px-1.5 py-0.2 rounded bg-blue-50 text-blue-700 border border-blue-200 text-[9px] font-extrabold uppercase tracking-wide">
+                    {tenant?.plan || "Free"}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -120,7 +153,8 @@ export default function AdminLayout({ children }) {
           <nav className="p-3 space-y-1">
             {navItems.map((item) => {
               const isLibrary = item.name === "Library";
-              const isLibraryActive = location.pathname.startsWith("/library") || location.pathname === "/inventory";
+              const isLibraryActive =
+                location.pathname.startsWith("/library") || location.pathname === "/inventory";
 
               const isActive =
                 (isLibrary && isLibraryActive) ||
@@ -145,7 +179,15 @@ export default function AdminLayout({ children }) {
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <span className={isActive && !isLibrary ? "text-white" : isActive && isLibrary ? "text-blue-600" : "text-slate-400 group-hover:text-slate-600"}>
+                      <span
+                        className={
+                          isActive && !isLibrary
+                            ? "text-white"
+                            : isActive && isLibrary
+                            ? "text-blue-600"
+                            : "text-slate-400 group-hover:text-slate-600"
+                        }
+                      >
                         {item.icon}
                       </span>
                       <span>{item.name}</span>
@@ -172,7 +214,7 @@ export default function AdminLayout({ children }) {
                         { name: "Accessories", path: "/library/accessories" },
                         { name: "Appliances", path: "/library/appliances" },
                         { name: "Other Services", path: "/library/other-services" },
-                        { name: "Import / Export", path: "/library/import-export" }
+                        { name: "Import / Export", path: "/library/import-export" },
                       ].map((sub) => {
                         const isSubActive =
                           location.pathname === sub.path ||
@@ -217,20 +259,38 @@ export default function AdminLayout({ children }) {
       </aside>
 
       {/* Main Content Area */}
-      <main className={`flex-1 min-w-0 ${isBOQPage ? "pt-0" : "pt-14 md:pt-0"} overflow-y-auto h-screen flex flex-col`}>
-        {/* Top Navbar Header - Hidden on BOQ Page */}
+      <main
+        className={`flex-1 min-w-0 ${
+          isBOQPage ? "pt-0" : "pt-14 md:pt-0"
+        } overflow-y-auto h-screen flex flex-col`}
+      >
+        {/* Top Navbar Header */}
         {!isBOQPage && (
           <header className="hidden md:flex items-center justify-between h-14 px-6 bg-white border-b border-slate-200 sticky top-0 z-30 shadow-2xs">
-            {/* Left: Page Title */}
-            <div className="flex items-center">
+            {/* Left: Page Title & Workspace */}
+            <div className="flex items-center gap-3">
               <h1 className="text-base font-bold text-slate-900 tracking-tight">
                 {getCurrentPageTitle()}
               </h1>
             </div>
 
-            {/* Right: Notifications Bell & Real User Profile Header */}
-            <div className="flex items-center gap-4 relative">
-              {/* Notification Bell with blue dot */}
+            {/* Right: Plan Status Badge, Notifications Bell & User Profile */}
+            <div className="flex items-center gap-3 relative">
+              {/* SaaS Plan Pill */}
+              <Link
+                to="/billing"
+                className="hidden lg:flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 hover:border-blue-300 rounded-full text-xs font-bold text-blue-700 transition"
+              >
+                <Zap size={13} className="text-amber-500 fill-amber-500" />
+                <span>{tenant?.plan || "Free"} Plan</span>
+                {tenant?.daysRemaining > 0 && (
+                  <span className="text-[10px] text-amber-700 font-extrabold bg-amber-100 px-1.5 py-0.2 rounded-full">
+                    {tenant.daysRemaining}d left
+                  </span>
+                )}
+              </Link>
+
+              {/* Notification Bell */}
               <Link
                 to="/notifications"
                 className="relative p-1.5 text-slate-600 hover:text-blue-600 hover:bg-slate-100 rounded-lg transition"
@@ -240,7 +300,7 @@ export default function AdminLayout({ children }) {
                 <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-blue-600 ring-2 ring-white" />
               </Link>
 
-              {/* Real User Profile Avatar & Role Badge Dropdown */}
+              {/* User Profile Avatar & Dropdown */}
               <div className="relative">
                 <button
                   onClick={(e) => {
@@ -259,9 +319,7 @@ export default function AdminLayout({ children }) {
                     </span>
                   </div>
 
-                  <div
-                    className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-black text-xs flex items-center justify-center shadow-xs select-none"
-                  >
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-black text-xs flex items-center justify-center shadow-xs select-none">
                     {adminUser?.name ? adminUser.name.charAt(0).toUpperCase() : "A"}
                   </div>
                 </button>
@@ -274,20 +332,36 @@ export default function AdminLayout({ children }) {
                   >
                     <div className="p-3 bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl text-white">
                       <div className="font-black text-sm text-blue-400">{adminUser?.name || "Admin User"}</div>
-                      <div className="text-[11px] text-slate-300 truncate">{adminUser?.email || "admin@dsoftsit.com"}</div>
-                      <div className="mt-1.5 inline-block text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30">
-                        {adminUser?.role || "Super Admin"}
+                      <div className="text-[11px] text-slate-300 truncate">
+                        {adminUser?.email || "admin@dsoftsit.com"}
+                      </div>
+                      <div className="mt-1.5 flex items-center gap-1.5">
+                        <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30">
+                          {adminUser?.role || "Super Admin"}
+                        </span>
+                        <span className="text-[10px] font-bold text-slate-400">
+                          {tenant?.name || "Workspace"}
+                        </span>
                       </div>
                     </div>
 
                     <div className="space-y-1 pt-1">
+                      <Link
+                        to="/billing"
+                        onClick={() => setIsProfileOpen(false)}
+                        className="flex items-center gap-2 px-3 py-2 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 font-semibold transition"
+                      >
+                        <CreditCard size={15} />
+                        <span>Subscription & Billing</span>
+                      </Link>
+
                       <Link
                         to="/settings"
                         onClick={() => setIsProfileOpen(false)}
                         className="flex items-center gap-2 px-3 py-2 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 font-semibold transition"
                       >
                         <Settings size={15} />
-                        <span>Settings & QR Hub</span>
+                        <span>Workspace Settings</span>
                       </Link>
 
                       <Link
@@ -296,7 +370,7 @@ export default function AdminLayout({ children }) {
                         className="flex items-center gap-2 px-3 py-2 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 font-semibold transition"
                       >
                         <ShieldCheck size={15} />
-                        <span>User Management & Staff</span>
+                        <span>Team Management</span>
                       </Link>
                     </div>
 
@@ -322,5 +396,3 @@ export default function AdminLayout({ children }) {
     </div>
   );
 }
-
-

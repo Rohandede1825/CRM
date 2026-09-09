@@ -1,6 +1,8 @@
 import express from "express";
 import { protect } from "../middleware/auth.middleware.js";
 import { checkRole } from "../middleware/rbac.middleware.js";
+import { requireTenant } from "../middleware/tenant.middleware.js";
+import { checkProjectLimit, checkUserLimit } from "../middleware/planLimits.middleware.js";
 
 import { getLeads, createLead, updateLead, deleteLead, exportLeadsExcel, bulkUploadLeads } from "../controllers/leadController.js";
 import { getWebsiteLeads, createWebsiteLead, convertWebsiteLead } from "../controllers/websiteLeadController.js";
@@ -30,8 +32,9 @@ router.get("/payments/:id/receipt", exportReceiptPdf);
 router.get("/leads/export/excel", exportLeadsExcel);
 router.get("/reports/export/:type", exportReportExcel);
 
-// Middleware: All other ERP management endpoints require JWT protection
+// Middleware: All other ERP management endpoints require JWT protection & Tenant Scope
 router.use(protect);
+router.use(requireTenant);
 
 // Settings
 router.get("/settings", getSettings);
@@ -62,7 +65,7 @@ router.post("/clients/:id/communication", addClientCommunication);
 
 // Projects
 router.get("/projects", getProjects);
-router.post("/projects", checkRole(["Admin", "Project Manager", "Super Admin"]), createProject);
+router.post("/projects", checkRole(["Admin", "Project Manager", "Super Admin"]), checkProjectLimit, createProject);
 router.put("/projects/:id", checkRole(["Admin", "Project Manager", "Super Admin"]), updateProject);
 router.put("/projects/:id/stage", checkRole(["Admin", "Project Manager", "Designer", "Super Admin"]), updateProjectStage);
 router.delete("/projects/:id", checkRole(["Admin", "Super Admin"]), deleteProject);
@@ -131,7 +134,7 @@ router.post("/calendar", createEvent);
 
 // Users & Roles (Admin & Super Admin only)
 router.get("/users", checkRole(["Admin", "Super Admin"]), getUsers);
-router.post("/users", checkRole(["Admin", "Super Admin"]), createUser);
+router.post("/users", checkRole(["Admin", "Super Admin"]), checkUserLimit, createUser);
 router.put("/users/:id", checkRole(["Admin", "Super Admin"]), updateUser);
 router.put("/users/:id/role", checkRole(["Admin", "Super Admin"]), updateUserRole);
 router.delete("/users/:id", checkRole(["Admin", "Super Admin"]), deleteUser);

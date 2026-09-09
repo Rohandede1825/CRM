@@ -32,6 +32,20 @@ const userSchema = new mongoose.Schema(
       ],
       default: "Admin",
     },
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
+    isTenantOwner: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: String,
+      enum: ["Active", "Invited", "Suspended"],
+      default: "Active",
+    },
     passwordResetToken: String,
     passwordResetExpires: Date,
   },

@@ -30,5 +30,5 @@ app.use("/uploads", express.static(path.join(process.cwd(), "public/uploads")));
 connectDB();
 
 server.listen(PORT, () => {
-  console.log(`🚀 Velora ERP Server running on port ${PORT}`);
+  console.log(`🚀 Dsofts IT SaaS Server running on port ${PORT}`);
 });

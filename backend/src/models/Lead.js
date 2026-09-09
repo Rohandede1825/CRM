@@ -82,13 +82,18 @@ const leadSchema = new mongoose.Schema(
         timestamp: { type: Date, default: Date.now }
       }
     ],
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
     isDuplicate: { type: Boolean, default: false }
   },
   { timestamps: true }
 );
 
-leadSchema.index({ phone: 1, email: 1 });
-leadSchema.index({ name: "text", siteLocation: "text", companyName: "text" });
+leadSchema.index({ tenantId: 1, phone: 1, email: 1 });
+leadSchema.index({ tenantId: 1, name: "text", siteLocation: "text", companyName: "text" });
 
 export default mongoose.model("Lead", leadSchema);
 

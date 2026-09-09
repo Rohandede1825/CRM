@@ -70,11 +70,16 @@ const clientSchema = new mongoose.Schema(
       }
     ],
     documents: [{ name: String, url: String, uploadedAt: { type: Date, default: Date.now } }],
-    gallery: [{ title: String, url: String, uploadedAt: { type: Date, default: Date.now } }]
+    gallery: [{ title: String, url: String, uploadedAt: { type: Date, default: Date.now } }],
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
   },
   { timestamps: true }
 );
 
-clientSchema.index({ phone: 1, email: 1, clientCode: 1, clientId: 1 });
+clientSchema.index({ tenantId: 1, phone: 1, email: 1, clientCode: 1, clientId: 1 });
 
 export default mongoose.model("Client", clientSchema);

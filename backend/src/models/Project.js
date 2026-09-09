@@ -54,9 +54,16 @@ const projectSchema = new mongoose.Schema(
         completed: { type: Boolean, default: false }
       }
     ],
-    isActive: { type: Boolean, default: true }
+    isActive: { type: Boolean, default: true },
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
   },
   { timestamps: true }
 );
+
+projectSchema.index({ tenantId: 1, projectNumber: 1, heading: 1, client: 1 });
 
 export default mongoose.model("Project", projectSchema);

@@ -36,14 +36,44 @@ export const DEFAULT_COMPANY_SETTINGS = {
 };
 
 /**
- * Loads the active company & payment settings from localStorage or defaults
+ * Loads the active company & payment settings from localStorage (including tenant workspace) or defaults
  */
 export const getActiveCompanySettings = () => {
   try {
-    const saved = localStorage.getItem("dsofts_payment_settings") || localStorage.getItem("dsofts_company_settings") || localStorage.getItem("velora_payment_settings") || localStorage.getItem("velora_company_settings");
+    let tenantSettings = {};
+    const tenantStr = localStorage.getItem("dsofts_tenant");
+    if (tenantStr) {
+      const tenant = JSON.parse(tenantStr);
+      if (tenant?.settings) {
+        tenantSettings = {
+          companyName: tenant.settings.companyName || tenant.name || DEFAULT_COMPANY_SETTINGS.companyName,
+          tagline: tenant.settings.tagline || DEFAULT_COMPANY_SETTINGS.tagline,
+          phone: tenant.settings.phone || DEFAULT_COMPANY_SETTINGS.phone,
+          email: tenant.settings.email || DEFAULT_COMPANY_SETTINGS.email,
+          address: tenant.settings.address?.street || DEFAULT_COMPANY_SETTINGS.address,
+          gstNumber: tenant.settings.taxation?.gstNumber || DEFAULT_COMPANY_SETTINGS.gstNumber,
+          panNumber: tenant.settings.taxation?.panNumber || DEFAULT_COMPANY_SETTINGS.panNumber,
+          bankName: tenant.settings.bankDetails?.bankName || DEFAULT_COMPANY_SETTINGS.bankName,
+          accountHolderName: tenant.settings.bankDetails?.accountName || DEFAULT_COMPANY_SETTINGS.accountHolderName,
+          accountNumber: tenant.settings.bankDetails?.accountNumber || DEFAULT_COMPANY_SETTINGS.accountNumber,
+          ifscCode: tenant.settings.bankDetails?.ifscCode || DEFAULT_COMPANY_SETTINGS.ifscCode,
+          branch: tenant.settings.bankDetails?.branch || DEFAULT_COMPANY_SETTINGS.branch,
+          upiId: tenant.settings.bankDetails?.upiId || DEFAULT_COMPANY_SETTINGS.upiId,
+        };
+      }
+    }
+
+    const saved =
+      localStorage.getItem("dsofts_payment_settings") ||
+      localStorage.getItem("dsofts_company_settings") ||
+      localStorage.getItem("velora_payment_settings") ||
+      localStorage.getItem("velora_company_settings");
     if (saved) {
       const parsed = JSON.parse(saved);
-      return { ...DEFAULT_COMPANY_SETTINGS, ...parsed };
+      return { ...DEFAULT_COMPANY_SETTINGS, ...tenantSettings, ...parsed };
+    }
+    if (Object.keys(tenantSettings).length > 0) {
+      return { ...DEFAULT_COMPANY_SETTINGS, ...tenantSettings };
     }
   } catch (e) {}
   return DEFAULT_COMPANY_SETTINGS;

@@ -5,9 +5,15 @@ import { sendEmail, testSmtpConnection } from "../services/email.service.js";
 // GET /api/erp/settings
 export const getSettings = async (req, res) => {
   try {
-    let settings = await CompanySetting.findOne();
+    const query = req.tenantId ? { tenantId: req.tenantId } : {};
+    let settings = await CompanySetting.findOne(query);
     if (!settings) {
-      settings = await CompanySetting.create({});
+      settings = await CompanySetting.create({
+        tenantId: req.tenantId || null,
+        companyName: req.tenant?.settings?.companyName || "DSOFTS IT",
+        email: req.tenant?.settings?.email || "info@dsoftsit.com",
+        phone: req.tenant?.settings?.phone || "+91 86055 26603",
+      });
     }
     res.json({ success: true, data: settings });
   } catch (err) {
@@ -18,9 +24,10 @@ export const getSettings = async (req, res) => {
 // POST /api/erp/settings
 export const updateSettings = async (req, res) => {
   try {
-    let settings = await CompanySetting.findOne();
+    const query = req.tenantId ? { tenantId: req.tenantId } : {};
+    let settings = await CompanySetting.findOne(query);
     if (!settings) {
-      settings = await CompanySetting.create(req.body);
+      settings = await CompanySetting.create({ ...req.body, tenantId: req.tenantId || null });
     } else {
       Object.assign(settings, req.body);
       await settings.save();
@@ -30,7 +37,8 @@ export const updateSettings = async (req, res) => {
       userName: req.user?.name || "Admin",
       action: "Updated",
       module: "Settings",
-      description: "Updated Company, Payment QR, Bank & SMTP Settings"
+      description: "Updated Company, Payment QR, Bank & SMTP Settings",
+      tenantId: req.tenantId,
     });
 
     res.json({ success: true, data: settings, message: "Settings updated successfully" });

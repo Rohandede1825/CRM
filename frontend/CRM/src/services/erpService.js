@@ -9,11 +9,20 @@ const api = axios.create({
   baseURL: API_BASE_URL
 });
 
-// Interceptor to attach JWT token
+// Interceptor to attach JWT token and tenant context
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("velora_admin_token");
+  const token = localStorage.getItem("dsofts_auth_token") || localStorage.getItem("velora_admin_token");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+  const tenantStr = localStorage.getItem("dsofts_tenant");
+  if (tenantStr) {
+    try {
+      const tenant = JSON.parse(tenantStr);
+      if (tenant?._id || tenant?.id) {
+        config.headers["x-tenant-id"] = tenant._id || tenant.id;
+      }
+    } catch (e) {}
   }
   return config;
 });
@@ -182,11 +191,22 @@ export const erpApi = {
   updateSettings: async (data) => (await api.post("/erp/settings", data)).data,
   testEmail: async (data) => (await api.post("/erp/settings/test-email", data)).data,
 
+  // SaaS Multi-Tenant & Workspace Management
+  getTenantSettings: async () => (await api.get("/tenant/settings")).data,
+  updateTenantSettings: async (data) => (await api.put("/tenant/settings", data)).data,
+  getTenantTeam: async () => (await api.get("/tenant/team")).data,
+  addTeamMember: async (data) => (await api.post("/tenant/team", data)).data,
+
+  // SaaS Subscription & Billing
+  getSubscriptionStatus: async () => (await api.get("/subscription/status")).data,
+  getPlans: async () => (await api.get("/subscription/plans")).data,
+  changePlan: async (plan, billingCycle = "monthly") => (await api.post("/subscription/change-plan", { plan, billingCycle })).data,
+
   // Activity Logs & Reports
   getActivityLogs: async (params) => (await api.get("/erp/activity-logs", { params })).data,
   getDashboardAnalytics: async () => (await api.get("/erp/dashboard/analytics")).data,
   getExportUrl: (type) => {
-    const token = localStorage.getItem("velora_token") || "";
+    const token = localStorage.getItem("dsofts_auth_token") || localStorage.getItem("velora_token") || "";
     return `${API_BASE_URL}/erp/reports/export/${type}${token ? `?token=${encodeURIComponent(token)}` : ""}`;
   }
 };

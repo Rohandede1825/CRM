@@ -23,9 +23,16 @@ const taskSchema = new mongoose.Schema(
         createdAt: { type: Date, default: Date.now }
       }
     ],
-    attachments: [{ name: String, url: String }]
+    attachments: [{ name: String, url: String }],
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
   },
   { timestamps: true }
 );
+
+taskSchema.index({ tenantId: 1, project: 1, assignedTo: 1, status: 1 });
 
 export default mongoose.model("Task", taskSchema);

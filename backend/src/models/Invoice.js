@@ -96,11 +96,16 @@ const invoiceSchema = new mongoose.Schema(
     },
     issueDate: { type: Date, default: Date.now },
     dueDate: { type: Date, default: null },
-    pdfUrl: { type: String, default: "" }
+    pdfUrl: { type: String, default: "" },
+    tenantId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tenant",
+      index: true,
+    },
   },
   { timestamps: true }
 );
 
-invoiceSchema.index({ invoiceNumber: 1, clientName: 1, projectName: 1, client: 1 });
+invoiceSchema.index({ tenantId: 1, invoiceNumber: 1, clientName: 1, projectName: 1, client: 1 });
 
 export default mongoose.model("Invoice", invoiceSchema);
