@@ -51,7 +51,7 @@ export default function Login() {
           </div>
           
           <h2 className="mt-6 text-3xl font-black tracking-widest text-slate-900 uppercase">
-            VELORA <span className="text-blue-600 font-light">CRM</span>
+            DSOFTS IT <span className="text-blue-600 font-light">CRM</span>
           </h2>
           
           <p className="mt-2 text-xs text-slate-500 font-medium">
@@ -109,7 +109,7 @@ export default function Login() {
                 <input
                   type="email"
                   required
-                  placeholder="e.g. admin@velora.com"
+                  placeholder="e.g. admin@dsoftsit.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 text-xs bg-slate-50 text-slate-800 placeholder-slate-400 transition"
@@ -172,7 +172,7 @@ export default function Login() {
 
         {/* Footer Info */}
         <div className="text-center text-xs text-slate-400">
-          <span>&copy; {new Date().getFullYear()} Velora Luxury ERP Portal.</span>
+          <span>&copy; {new Date().getFullYear()} Dsofts IT ERP Portal.</span>
         </div>
 
       </div>

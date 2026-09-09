@@ -7,7 +7,7 @@ export const DEFAULT_TERMS_AND_CONDITIONS_TEMPLATE = {
   id: "standard_interior_boq",
   title: "Standard Interior Turnkey Contract & 12-Year Warranty",
   bankDetails: {
-    accountHolder: "VELORA ANTARAAL",
+    accountHolder: "DSOFTS IT",
     accountNumber: "50200073374185",
     ifsc: "HDFC0000223",
     branch: "WAKAD / PASHAN",
@@ -159,7 +159,7 @@ export const calculateMilestones = (grandTotal, paymentPlan = DEFAULT_TERMS_AND_
  */
 export const getActiveTermsTemplate = () => {
   try {
-    const custom = localStorage.getItem("velora_custom_tc_template");
+    const custom = localStorage.getItem("dsofts_custom_tc_template") || localStorage.getItem("velora_custom_tc_template");
     if (custom) {
       return JSON.parse(custom);
     }
@@ -174,6 +174,7 @@ export const getActiveTermsTemplate = () => {
  */
 export const saveActiveTermsTemplate = (template) => {
   try {
+    localStorage.setItem("dsofts_custom_tc_template", JSON.stringify(template));
     localStorage.setItem("velora_custom_tc_template", JSON.stringify(template));
     return true;
   } catch (e) {

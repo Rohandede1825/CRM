@@ -448,7 +448,7 @@ export default function Clients() {
                 </span>
               </div>
               <p className="text-xs text-slate-500 mt-1 font-medium">
-                Velora Antaraal • Connected Enquiry &rarr; Client 360° &rarr; BOQ Estimates &rarr; Tax Invoices
+                Dsofts IT • Connected Enquiry &rarr; Client 360° &rarr; BOQ Estimates &rarr; Tax Invoices
               </p>
             </div>
 
@@ -1088,7 +1088,7 @@ export default function Clients() {
                         </span>
                       </div>
                       <span className="text-[11px] text-slate-500 block mt-0.5">
-                        Issued: {new Date().toLocaleDateString("en-IN")} • Velora Turnkey Interior Execution
+                        Issued: {new Date().toLocaleDateString("en-IN")} • Dsofts IT Execution
                       </span>
                     </div>
 

@@ -88,7 +88,7 @@ export default function ReportsAnalytics() {
 
       if (res.ok) {
         const blob = await res.blob();
-        triggerBlobDownload(blob, `Velora_${report.type}_report.xlsx`);
+        triggerBlobDownload(blob, `DsoftsIT_${report.type}_report.xlsx`);
         setToastMsg(`Exported ${report.title}`);
         setTimeout(() => setToastMsg(""), 3000);
         return;
@@ -100,7 +100,7 @@ export default function ReportsAnalytics() {
     }
 
     // Fallback: Client-side CSV export
-    downloadCsv(`Velora_${report.type}_Report`, report.mockColumns, report.mockData);
+    downloadCsv(`DsoftsIT_${report.type}_Report`, report.mockColumns, report.mockData);
     setToastMsg(`Exported ${report.title} (CSV)`);
     setTimeout(() => setToastMsg(""), 3000);
   };

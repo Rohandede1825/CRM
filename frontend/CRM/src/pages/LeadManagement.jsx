@@ -58,7 +58,7 @@ export default function LeadManagement() {
   const [leadBOQs, setLeadBOQs] = useState([]);
 
   // Create BOQ Form State
-  const [preparedBy, setPreparedBy] = useState("Velora Designer");
+  const [preparedBy, setPreparedBy] = useState("Dsofts Designer");
   const [boqRooms, setBoqRooms] = useState([
     {
       name: "Living Room",

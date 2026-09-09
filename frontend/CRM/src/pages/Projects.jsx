@@ -129,8 +129,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Sep 2, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Lead Consultant",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Lead Consultant",
       serviceEligibility: "1 Year Free Snag Warranty",
       serviceValidTill: "Sep 2, 2027",
       notes: "Full turnkey interior fitout including modular kitchen, Italian marble polishing, and false ceiling."
@@ -159,8 +159,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Aug 28, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Senior Architect",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Senior Architect",
       serviceEligibility: "1 Year Free Snag Warranty",
       serviceValidTill: "Aug 28, 2027",
       notes: "Office fitout with conference room acoustics and ergonomic workstations."
@@ -189,8 +189,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Aug 25, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Lead Consultant",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Lead Consultant",
       serviceEligibility: "1 Year Free Snag Warranty",
       serviceValidTill: "Aug 25, 2027",
       notes: "Penthouse execution with acoustic home theatre and automation."
@@ -219,8 +219,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Aug 20, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Commercial Lead",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Commercial Lead",
       serviceEligibility: "2 Years Commercial Support",
       serviceValidTill: "Aug 20, 2028",
       notes: "Showroom display fixtures with premium LED backlight profiles."
@@ -249,8 +249,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Aug 18, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Lead Consultant",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Lead Consultant",
       serviceEligibility: "1 Year Free Snag Warranty",
       serviceValidTill: "Aug 18, 2027",
       notes: "Space-saving modular furniture with hydraulic storage."
@@ -279,8 +279,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Aug 15, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Healthcare Specialist",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Healthcare Specialist",
       serviceEligibility: "1 Year Free Snag Warranty",
       serviceValidTill: "Aug 15, 2027",
       notes: "Antimicrobial finishes with specialized reception and patient lounge."
@@ -309,8 +309,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Aug 12, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Lead Consultant",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Lead Consultant",
       serviceEligibility: "1 Year Free Snag Warranty",
       serviceValidTill: "Aug 12, 2027",
       notes: "Custom fluted wall paneling, Italian PU finish wardrobes, and quartz island."
@@ -339,8 +339,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Aug 05, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Commercial Lead",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Commercial Lead",
       serviceEligibility: "2 Years Enterprise SLA",
       serviceValidTill: "Aug 05, 2028",
       notes: "State-of-the-art AI Innovation Lab and workspace fitout with acoustic baffles."
@@ -369,8 +369,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Jun 21, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Lead Consultant",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Lead Consultant",
       serviceEligibility: "1 Year Free Snag Warranty",
       serviceValidTill: "Jun 21, 2027",
       notes: "High-end penthouse renovation with brass inlay carpentry and smart automation."
@@ -399,8 +399,8 @@ export default function Projects() {
       actualStartDate: "",
       actualEndDate: "",
       orderDate: "Jun 18, 2026",
-      handledBy: "Rutuja@velora",
-      projectConsultant: "Velora Lead Consultant",
+      handledBy: "Rutuja@dsoftsit.com",
+      projectConsultant: "Dsofts Lead Consultant",
       serviceEligibility: "1 Year Free Snag Warranty",
       serviceValidTill: "Jun 18, 2027",
       notes: "Compact turnkey execution with pastel laminate themes and custom modular kitchen."
@@ -480,8 +480,8 @@ export default function Projects() {
             actualStartDate: "",
             actualEndDate: "",
             orderDate: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
-            handledBy: enq.handledBy || "Rutuja@velora",
-            projectConsultant: "Velora Lead Consultant",
+            handledBy: enq.handledBy || "Rutuja@dsoftsit.com",
+            projectConsultant: "Dsofts Lead Consultant",
             serviceEligibility: "1 Year Free Snag Warranty",
             serviceValidTill: new Date(Date.now() + 365 * 86400000).toISOString().split("T")[0],
             notes: enq.notes || enq.remarks || "Enquiry registered in CRM.",
@@ -1052,12 +1052,12 @@ export default function Projects() {
                         <div className="space-y-3.5 text-xs">
                           <div className="flex items-center justify-between">
                             <span className="text-stone-500 font-medium">Handled By</span>
-                            <span className="font-bold text-stone-800">{selectedProject.handledBy || "Rutuja@velora"}</span>
+                            <span className="font-bold text-stone-800">{selectedProject.handledBy || "Rutuja@dsoftsit.com"}</span>
                           </div>
 
                           <div className="flex items-center justify-between">
                             <span className="text-stone-500 font-medium">Project Consultant</span>
-                            <span className="font-bold text-stone-800">{selectedProject.projectConsultant || "Velora Lead Consultant"}</span>
+                            <span className="font-bold text-stone-800">{selectedProject.projectConsultant || "Dsofts Lead Consultant"}</span>
                           </div>
 
                           <div className="flex items-center justify-between">
@@ -1869,7 +1869,7 @@ export default function Projects() {
                   <label className="block font-semibold text-stone-700 mb-1">Handled By</label>
                   <input
                     type="text"
-                    value={editFormData.handledBy || "Rutuja@velora"}
+                    value={editFormData.handledBy || "Rutuja@dsoftsit.com"}
                     onChange={(e) => setEditFormData({ ...editFormData, handledBy: e.target.value })}
                     className="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-blue-500"
                   />
@@ -1879,7 +1879,7 @@ export default function Projects() {
                   <label className="block font-semibold text-stone-700 mb-1">Project Consultant</label>
                   <input
                     type="text"
-                    value={editFormData.projectConsultant || "Velora Lead Consultant"}
+                    value={editFormData.projectConsultant || "Dsofts Lead Consultant"}
                     onChange={(e) => setEditFormData({ ...editFormData, projectConsultant: e.target.value })}
                     className="w-full px-3 py-2 bg-white border border-stone-200 rounded-xl text-stone-900 focus:outline-none focus:border-blue-500"
                   />

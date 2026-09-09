@@ -128,7 +128,7 @@ export default function QuotationInvoiceManager() {
       ],
       notes: "Registered under Composition Taxable scheme. Not eligible to collect tax on supplies.",
       termsAndConditions: "TERMS & CONDITIONS\nFor Interior Design & Turnkey Execution\n1. 50% advance payment upon signing the work order.\n2. 40% before factory production and dispatch.\n3. 10% upon final snag clearance and handover.\n4. All carpentry materials are tested BWP Grade.",
-      bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+      bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
     },
     {
       _id: "inv_003a",
@@ -184,7 +184,7 @@ export default function QuotationInvoiceManager() {
       ],
       notes: "Registered under Composition Taxable scheme. Not eligible to collect tax on supplies.",
       termsAndConditions: "TERMS & CONDITIONS\nFor Interior Design & Turnkey Execution\n1. 50% advance payment upon signing the work order.\n2. 40% before factory dispatch.\n3. 10% upon final snag clearance.",
-      bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+      bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
     },
     {
       _id: "inv_005",
@@ -229,8 +229,8 @@ export default function QuotationInvoiceManager() {
         }
       ],
       notes: "Registered under Composition Taxable scheme. Not eligible to collect tax on supplies.",
-      termsAndConditions: "Standard Velora Antaraal Terms Apply.",
-      bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+      termsAndConditions: "Standard Dsofts IT Terms Apply.",
+      bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
     },
     {
       _id: "inv_004",
@@ -276,7 +276,7 @@ export default function QuotationInvoiceManager() {
       ],
       notes: "Registered under Composition Taxable scheme.",
       termsAndConditions: "Standard terms apply.",
-      bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+      bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
     },
     {
       _id: "inv_003b",
@@ -322,7 +322,7 @@ export default function QuotationInvoiceManager() {
       ],
       notes: "Registered under Composition Taxable scheme.",
       termsAndConditions: "Standard terms apply.",
-      bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+      bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
     },
     {
       _id: "inv_002",
@@ -368,7 +368,7 @@ export default function QuotationInvoiceManager() {
       ],
       notes: "Payment received in full.",
       termsAndConditions: "Standard terms apply.",
-      bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+      bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
     },
     {
       _id: "inv_001",
@@ -414,7 +414,7 @@ export default function QuotationInvoiceManager() {
       ],
       notes: "Registered under Composition Taxable scheme.",
       termsAndConditions: "Standard terms apply.",
-      bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+      bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
     },
     {
       _id: "inv_002a",
@@ -460,7 +460,7 @@ export default function QuotationInvoiceManager() {
       ],
       notes: "Payment received in full.",
       termsAndConditions: "Standard terms apply.",
-      bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+      bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
     }
   ];
 
@@ -616,7 +616,7 @@ export default function QuotationInvoiceManager() {
     ],
     notes: "Registered under Composition Taxable scheme. Not eligible to collect tax on supplies.",
     termsAndConditions: "TERMS & CONDITIONS\nFor Interior Design & Turnkey Execution\n1. 50% advance payment upon signing the work order.\n2. 40% before factory production and dispatch.\n3. 10% upon final snag clearance and handover.\n4. All carpentry materials are tested BWP Grade.",
-    bankDetails: "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
+    bankDetails: "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nIFSC: HDFC0000282\nBank: HDFC Bank, Wakad Branch"
   };
 
   const [formData, setFormData] = useState(initialInvoiceForm);
@@ -2180,13 +2180,13 @@ export default function QuotationInvoiceManager() {
                       {/* Top Header */}
                       <div className="flex items-start justify-between border-b border-stone-200 pb-5">
                         <div className="space-y-1.5">
-                          {/* Velora Antaraal Luxury Logo Badge */}
+                          {/* Dsofts IT Logo Badge */}
                           <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-blue-50 border border-blue-200 rounded-xl text-blue-700 font-black text-sm tracking-wider shadow-2xs">
                             <Building size={16} />
-                            <span>VELORA ANTARAAL</span>
+                            <span>DSOFTS IT</span>
                           </div>
                           <p className="font-bold text-stone-800 text-xs leading-relaxed max-w-[320px]">
-                            BAFANA NIWAS, AUNDH HINJEWADI WAKAD CHOWK, WAKAD, SR NO 242/2/B1, Hinjawadi, Pune, Maharashtra, 411057
+                            SHOP NO. 4, TECH PLAZA, AUNDH HINJEWADI WAKAD CHOWK, WAKAD, Pune, Maharashtra, 411057
                           </p>
                           <div className="flex flex-wrap items-center gap-3 text-stone-600 text-xs font-medium">
                             <span className="flex items-center gap-1 font-mono">
@@ -2195,7 +2195,7 @@ export default function QuotationInvoiceManager() {
                             </span>
                             <span className="flex items-center gap-1">
                               <Mail size={12} className="text-stone-400" />
-                              <span>velora.family@gmail.com</span>
+                              <span>info@dsoftsit.com</span>
                             </span>
                           </div>
                           <p className="text-stone-800 font-bold font-mono text-xs">
@@ -2341,7 +2341,7 @@ export default function QuotationInvoiceManager() {
                             Bank Details & Payment Instructions
                           </span>
                           <p className="font-mono text-[11px] text-stone-700 leading-relaxed">
-                            Account Holder: VELORA ANTARAAL<br />
+                            Account Holder: DSOFTS IT<br />
                             Account Number: 50200073374185<br />
                             IFSC: HDFC0000282<br />
                             Branch: WAKAD<br />
@@ -2394,8 +2394,8 @@ export default function QuotationInvoiceManager() {
                         <h2 className="text-sm font-black text-stone-900 uppercase">TERMS & CONDITIONS</h2>
                         <span className="text-xs text-stone-600 block">For Interior Design & Turnkey Execution Services</span>
                         <div className="pt-2 text-xs">
-                          <span className="font-bold text-stone-900 block">Company Name: VELORA ANTARAAL</span>
-                          <span className="text-stone-600 block">Tagline: Designing Elevated Living</span>
+                          <span className="font-bold text-stone-900 block">Company Name: DSOFTS IT</span>
+                          <span className="text-stone-600 block">Tagline: Innovative IT Solutions & Digital Excellence</span>
                         </div>
                       </div>
 
@@ -2511,7 +2511,7 @@ export default function QuotationInvoiceManager() {
                       <div>
                         <p className="font-bold text-stone-900 mb-1">10. Ownership of Designs</p>
                         <p className="text-stone-600">
-                          All drawings, concepts, renders, and designs remain intellectual property of VELORA ANTARAAL unless otherwise agreed in writing. Unauthorized copying or execution through third parties is prohibited.
+                          All drawings, concepts, renders, and designs remain intellectual property of DSOFTS IT unless otherwise agreed in writing. Unauthorized copying or execution through third parties is prohibited.
                         </p>
                       </div>
 
@@ -2560,7 +2560,7 @@ export default function QuotationInvoiceManager() {
                         </div>
                         <div className="pt-2">
                           <p className="font-bold text-stone-900">Authorized Signatory</p>
-                          <p className="font-black text-stone-900">VELORA ANTARAAL</p>
+                          <p className="font-black text-stone-900">DSOFTS IT</p>
                         </div>
                       </div>
                     </div>

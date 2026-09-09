@@ -309,7 +309,7 @@ export default function SettingsManager() {
                   type="text"
                   value={settings.accountHolderName || ""}
                   onChange={(e) => setSettings({ ...settings, accountHolderName: e.target.value })}
-                  placeholder="e.g. VELORA INTERIORS PRIVATE LIMITED"
+                  placeholder="e.g. DSOFTS IT PRIVATE LIMITED"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white text-slate-900 font-medium"
                 />
               </div>
@@ -366,7 +366,7 @@ export default function SettingsManager() {
                   type="text"
                   value={settings.upiId || ""}
                   onChange={(e) => setSettings({ ...settings, upiId: e.target.value })}
-                  placeholder="e.g. velora.interiors@hdfcbank"
+                  placeholder="e.g. dsoftsit@hdfcbank"
                   className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-blue-500 focus:bg-white text-slate-900 font-medium"
                 />
               </div>
@@ -571,7 +571,7 @@ export default function SettingsManager() {
           <div className="border-b border-slate-100 pb-4">
             <h2 className="text-lg font-extrabold text-slate-900 flex items-center gap-2">
               <Building2 size={20} className="text-blue-600" />
-              Velora Antaraal Official Business Identity
+              Dsofts IT Official Business Identity
             </h2>
             <p className="text-xs text-slate-500 mt-1 font-medium">
               Configure company address, GSTIN, contact numbers, and website info that appears in document headers & footers.

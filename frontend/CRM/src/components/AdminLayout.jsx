@@ -26,7 +26,7 @@ export default function AdminLayout({ children }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [adminUser] = useState(
-    getCurrentUser() || { name: "Admin", email: "admin@veloradesign.com", role: "Super Admin" }
+    getCurrentUser() || { name: "Admin", email: "admin@dsoftsit.com", role: "Super Admin" }
   );
   const location = useLocation();
   const navigate = useNavigate();
@@ -74,7 +74,7 @@ export default function AdminLayout({ children }) {
     const current = navItems.find(
       (item) => item.path === location.pathname || item.aliases?.includes(location.pathname)
     );
-    return current?.name || "Velora";
+    return current?.name || "Dsofts IT";
   };
 
   const isBOQPage = location.pathname.startsWith("/boq") || location.pathname === "/estimates";
@@ -84,7 +84,7 @@ export default function AdminLayout({ children }) {
       {/* Mobile Top Navigation */}
       {!isBOQPage && (
         <div className="md:hidden fixed top-0 left-0 right-0 h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between z-40 shadow-xs">
-          <span className="font-black text-sm text-blue-600 tracking-wider">VELORA</span>
+          <span className="font-black text-sm text-blue-600 tracking-wider">DSOFTS IT</span>
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="p-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition"
@@ -108,7 +108,7 @@ export default function AdminLayout({ children }) {
             </div>
             <div>
               <h2 className="font-extrabold text-sm text-slate-900 tracking-wider">
-                VELORA
+                DSOFTS IT
               </h2>
               <span className="text-[9px] text-blue-600 font-extrabold uppercase tracking-widest block">
                 Executive CRM
@@ -274,7 +274,7 @@ export default function AdminLayout({ children }) {
                   >
                     <div className="p-3 bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl text-white">
                       <div className="font-black text-sm text-blue-400">{adminUser?.name || "Admin User"}</div>
-                      <div className="text-[11px] text-slate-300 truncate">{adminUser?.email || "admin@velora.family"}</div>
+                      <div className="text-[11px] text-slate-300 truncate">{adminUser?.email || "admin@dsoftsit.com"}</div>
                       <div className="mt-1.5 inline-block text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-200 border border-blue-400/30">
                         {adminUser?.role || "Super Admin"}
                       </div>

@@ -32,7 +32,7 @@ export const generatePdfDoc = (res, title, dataLines = []) => {
   doc.pipe(res);
 
   // Velora Gold luxury header styling
-  doc.fillColor("#9E7B1D").fontSize(20).font("Helvetica-Bold").text("VELORA LUXURY INTERIORS", { align: "center" });
+  doc.fillColor("#9E7B1D").fontSize(20).font("Helvetica-Bold").text("DSOFTS IT", { align: "center" });
   doc.moveDown(0.2);
   doc.fillColor("#64748B").fontSize(8).font("Helvetica-Oblique").text("Bespoke Designs • Premium Materials • Flawless Execution", { align: "center" });
   doc.moveDown(0.5);
@@ -49,7 +49,7 @@ export const generatePdfDoc = (res, title, dataLines = []) => {
   });
 
   doc.moveDown(2);
-  doc.fontSize(8).fillColor("#888888").text("Generated automatically by Velora CRM ERP", { align: "center" });
+  doc.fontSize(8).fillColor("#888888").text("Generated automatically by Dsofts IT CRM ERP", { align: "center" });
 
   doc.end();
 };
@@ -102,9 +102,9 @@ export const generateInvoicePdfDoc = (res, invoice = {}) => {
 
   // --- PAGE 1: Header, Company & Client Info, Items Table ---
   doc.rect(40, 35, 75, 45).fill(darkNavy);
-  doc.fillColor(gold).fontSize(9).font("Helvetica-Bold").text("VELORA", 52, 53);
+  doc.fillColor(gold).fontSize(9).font("Helvetica-Bold").text("DSOFTS IT", 52, 53);
 
-  doc.fillColor(darkNavy).fontSize(16).font("Helvetica-Bold").text("VELORA LUXURY INTERIORS", 130, 48);
+  doc.fillColor(darkNavy).fontSize(16).font("Helvetica-Bold").text("DSOFTS IT", 130, 48);
 
   doc.fillColor(darkNavy).fontSize(12).font("Helvetica-Bold").text("TAX INVOICE", 410, 38, { align: "right" });
 
@@ -133,7 +133,7 @@ export const generateInvoicePdfDoc = (res, invoice = {}) => {
 
   doc.fontSize(7).font("Helvetica-Bold").fillColor(charcoal);
   doc.text("LEGAL NAME:", 46, startY + 23);
-  doc.font("Helvetica").text("VELORA LUXURY INTERIORS", 115, startY + 23);
+  doc.font("Helvetica").text("DSOFTS IT", 115, startY + 23);
 
   doc.font("Helvetica-Bold").text("GST NO:", 46, startY + 34);
   doc.font("Helvetica").text("27CHCPS9945R1Z4", 115, startY + 34);
@@ -145,7 +145,7 @@ export const generateInvoicePdfDoc = (res, invoice = {}) => {
   doc.font("Helvetica").text("Maharashtra", 115, startY + 56);
 
   doc.font("Helvetica-Bold").text("EMAIL:", 46, startY + 67);
-  doc.font("Helvetica").text("info@veloraluxury.com", 115, startY + 67);
+  doc.font("Helvetica").text("info@dsoftsit.com", 115, startY + 67);
 
   doc.font("Helvetica-Bold").text("CONTACT NO:", 46, startY + 78);
   doc.font("Helvetica").text("8055526603", 115, startY + 78);
@@ -248,7 +248,7 @@ export const generateInvoicePdfDoc = (res, invoice = {}) => {
     if (tableY > 720) {
       doc.addPage();
       doc.rect(40, 35, 515, 25).fill(darkNavy);
-      doc.fillColor(gold).fontSize(11).font("Helvetica-Bold").text("VELORA LUXURY INTERIORS", 50, 42);
+      doc.fillColor(gold).fontSize(11).font("Helvetica-Bold").text("DSOFTS IT", 50, 42);
       doc.fillColor("#FFFFFF").fontSize(9).font("Helvetica-Bold").text(`TAX INVOICE (${invNum}) - Contd.`, 390, 42, { align: "right" });
       tableY = 65;
       renderTableHeader(tableY);
@@ -306,7 +306,7 @@ export const generateInvoicePdfDoc = (res, invoice = {}) => {
 
   drawSectionBox(40, p2Y, 515, 75, "BANK DETAILS & PAYMENT INSTRUCTIONS");
   doc.fontSize(7.5).font("Helvetica-Bold").fillColor(charcoal);
-  doc.text("Account Holder: VELORA LUXURY INTERIORS", 48, p2Y + 25);
+  doc.text("Account Holder: DSOFTS IT", 48, p2Y + 25);
   doc.font("Helvetica").text("Account Number: 50200073374185", 48, p2Y + 37);
   doc.text("IFSC: HDFC0000223 | Branch: WAKAD / PASHAN", 48, p2Y + 49);
   doc.text("Account Type: Current Account", 48, p2Y + 61);
@@ -351,7 +351,7 @@ export const generateInvoicePdfDoc = (res, invoice = {}) => {
   termY = 55;
 
   printTerm("9. Cancellation Policy", "Booking amount/design fees non-refundable. Charges for completed work/materials procured recoverable.");
-  printTerm("10. Ownership of Designs", "All drawings, concepts, renders, and designs remain intellectual property of VELORA LUXURY INTERIORS.");
+  printTerm("10. Ownership of Designs", "All drawings, concepts, renders, and designs remain intellectual property of DSOFTS IT.");
   printTerm("11. Photography & Portfolio Rights", "Company reserves right to photograph completed projects for portfolio/social media.");
   printTerm("12. Limitation of Liability", "Company not liable for structural defects, existing site issues, external agency delays.");
   printTerm("13. Force Majeure", "Company not responsible for delays caused by natural disasters, strikes, pandemic, supply disruptions.");
@@ -365,11 +365,11 @@ export const generateInvoicePdfDoc = (res, invoice = {}) => {
 
   termY += 25;
   doc.font("Helvetica-Bold").text("Authorized Signatory", 48, termY);
-  doc.font("Helvetica-Bold").fillColor(darkNavy).text("VELORA LUXURY INTERIORS", 48, termY + 12);
+  doc.font("Helvetica-Bold").fillColor(darkNavy).text("DSOFTS IT", 48, termY + 12);
 
   const sealY = 675;
   doc.rect(40, sealY, 515, 16).fill(headerBlue);
-  doc.fillColor("#FFFFFF").fontSize(8).font("Helvetica-Bold").text("VELORA LUXURY INTERIORS", 48, sealY + 4);
+  doc.fillColor("#FFFFFF").fontSize(8).font("Helvetica-Bold").text("DSOFTS IT", 48, sealY + 4);
 
   doc.strokeColor(borderGrey).rect(40, sealY + 16, 515, 60).stroke();
   doc.fontSize(7.5).font("Helvetica-Bold").fillColor(slate).text("Authorised Common seal", 40, sealY + 62, { width: 515, align: "center" });
@@ -395,7 +395,7 @@ export const generateBOQPdf = (res, boq) => {
   const lightGrey = "#F1F5F9";
 
   // Header Logo / Brand
-  doc.fillColor(darkGold).fontSize(22).font("Helvetica-Bold").text("VELORA LUXURY INTERIORS", { align: "center" });
+  doc.fillColor(darkGold).fontSize(22).font("Helvetica-Bold").text("DSOFTS IT", { align: "center" });
   doc.moveDown(0.2);
   doc.fillColor(slate).fontSize(8).font("Helvetica-Oblique").text("Bespoke Designs • Premium Materials • Flawless Execution", { align: "center" });
   doc.moveDown(0.8);
@@ -441,7 +441,7 @@ export const generateBOQPdf = (res, boq) => {
       // Room / Space Header
       if (doc.y > 680) {
         doc.addPage();
-        doc.fillColor(darkGold).fontSize(14).font("Helvetica-Bold").text("VELORA LUXURY INTERIORS", 50, 40);
+        doc.fillColor(darkGold).fontSize(14).font("Helvetica-Bold").text("DSOFTS IT", 50, 40);
         doc.strokeColor(gold).lineWidth(1).moveTo(50, 58).lineTo(545, 58).stroke();
         doc.y = 70;
       }
@@ -468,7 +468,7 @@ export const generateBOQPdf = (res, boq) => {
         items.forEach((item) => {
           if (doc.y > 720) {
             doc.addPage();
-            doc.fillColor(darkGold).fontSize(14).font("Helvetica-Bold").text("VELORA LUXURY INTERIORS", 50, 40);
+            doc.fillColor(darkGold).fontSize(14).font("Helvetica-Bold").text("DSOFTS IT", 50, 40);
             doc.strokeColor(gold).lineWidth(1).moveTo(50, 58).lineTo(545, 58).stroke();
             doc.y = 70;
           }
@@ -512,7 +512,7 @@ export const generateBOQPdf = (res, boq) => {
   // Summary box & totals
   if (doc.y > 620) {
     doc.addPage();
-    doc.fillColor(darkGold).fontSize(14).font("Helvetica-Bold").text("VELORA LUXURY INTERIORS", 50, 40);
+    doc.fillColor(darkGold).fontSize(14).font("Helvetica-Bold").text("DSOFTS IT", 50, 40);
     doc.strokeColor(gold).lineWidth(1).moveTo(50, 58).lineTo(545, 58).stroke();
     doc.y = 80;
   }

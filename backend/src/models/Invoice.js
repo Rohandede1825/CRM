@@ -86,7 +86,7 @@ const invoiceSchema = new mongoose.Schema(
     bankDetails: {
       type: String,
       default:
-        "Account Holder: VELORA ANTARAAL\nAccount Number: 50200073374185\nBank Name: HDFC Bank, Wakad Branch\nIFSC Code: HDFC0000123"
+        "Account Holder: DSOFTS IT\nAccount Number: 50200073374185\nBank Name: HDFC Bank, Wakad Branch\nIFSC Code: HDFC0000123"
     },
 
     status: {

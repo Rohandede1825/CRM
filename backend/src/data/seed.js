@@ -70,25 +70,25 @@ const seedDatabase = async () => {
     const users = await User.create([
       {
         name: "Admin User",
-        email: "admin@veloradesigns.com",
+        email: "admin@dsoftsit.com",
         password: "adminpassword",
         role: "Admin",
       },
       {
         name: "Sales Coordinator",
-        email: "sales@veloradesigns.com",
+        email: "sales@dsoftsit.com",
         password: "salespassword",
         role: "Sales",
       },
       {
         name: "Priya Sharma (Designer)",
-        email: "designer@veloradesigns.com",
+        email: "designer@dsoftsit.com",
         password: "designerpassword",
         role: "Designer",
       },
       {
         name: "Amit Verma (Project Manager)",
-        email: "pm@veloradesigns.com",
+        email: "pm@dsoftsit.com",
         password: "pmpassword",
         role: "Project Manager",
       },

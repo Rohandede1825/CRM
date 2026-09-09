@@ -313,7 +313,7 @@ export default function UserManagement() {
               <h3 className="text-lg font-black text-slate-900">Delete User Account</h3>
             </div>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Are you sure you want to permanently delete this user account? This staff member will immediately lose access to the Velora ERP system.
+              Are you sure you want to permanently delete this user account? This staff member will immediately lose access to the Dsofts IT ERP system.
             </p>
             <div className="flex justify-end gap-3 pt-2">
               <button
@@ -446,7 +446,7 @@ export default function UserManagement() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              placeholder="e.g. rohan@velora.family"
+              placeholder="e.g. rohan@dsoftsit.com"
               className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 font-medium focus:outline-none focus:border-blue-500"
             />
           </div>

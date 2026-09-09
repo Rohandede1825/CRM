@@ -14,7 +14,7 @@ const SPACE_TEMPLATES = [
 
 export default function EstimateBuilder({ onSaveBOQ, initialClientName = "", projectId = "", leadId = "" }) {
   const [clientName, setClientName] = useState(initialClientName);
-  const [preparedBy, setPreparedBy] = useState("Velora Senior Architect");
+  const [preparedBy, setPreparedBy] = useState("Dsofts Senior Architect");
   
   // Association states
   const [associationType, setAssociationType] = useState(

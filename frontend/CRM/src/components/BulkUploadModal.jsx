@@ -134,7 +134,7 @@ export default function BulkUploadModal({ isOpen, onClose, onSuccess }) {
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "Velora_Enquiry_Import_Template.csv");
+    link.setAttribute("download", "Dsofts_Enquiry_Import_Template.csv");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);

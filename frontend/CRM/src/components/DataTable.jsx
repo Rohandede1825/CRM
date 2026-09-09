@@ -66,7 +66,7 @@ export default function DataTable({
     if (typeof onExportExcel === "function") {
       onExportExcel();
     } else {
-      downloadCsv(title || "Velora_Export", columns, processedData);
+      downloadCsv(title || "Dsofts_Export", columns, processedData);
     }
   };
 

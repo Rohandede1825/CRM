@@ -87,7 +87,7 @@ const boqSchema = new mongoose.Schema(
       enum: ["Draft", "Pending Approval", "Approved", "Rejected", "Invoiced"],
       default: "Draft"
     },
-    preparedBy: { type: String, default: "Velora Antraal Design Team" },
+    preparedBy: { type: String, default: "Dsofts IT Team" },
     autoSave: { type: Boolean, default: true },
     pdfUrl: { type: String, default: "" }
   },

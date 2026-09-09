@@ -123,24 +123,24 @@ export const generateClientSideBOQPdf = async (boq, options = {}) => {
   if (clientPhone) doc.text(`Phone: ${clientPhone}`, 40, 84);
   doc.text(formattedDate, 40, clientPhone ? 96 : 84);
 
-  // Header Right: Velora Antaraal Branding matching Image 2
+  // Header Right: Dsofts IT Branding
   doc.setFont("helvetica", "bold");
   doc.setFontSize(16);
   doc.setTextColor(37, 99, 235); // Royal Blue #2563EB
-  doc.text("VELORA ANTARAAL", 555, 42, { align: "right" });
+  doc.text("DSOFTS IT", 555, 42, { align: "right" });
 
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9);
   doc.setTextColor(120, 113, 108);
-  doc.text("INTERIOR DESIGN | DÉCOR | RETAIL", 555, 54, { align: "right" });
+  doc.text("IT SOLUTIONS | SOFTWARE | CONSULTING", 555, 54, { align: "right" });
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8.5);
   doc.setTextColor(87, 83, 78);
-  doc.text("Shop No.242/2/B1, Bafna Niwas, Aundh Hinjewadi Road,", 555, 66, { align: "right" });
+  doc.text("Shop No. 4, Tech Plaza, Aundh Hinjewadi Road,", 555, 66, { align: "right" });
   doc.text("Wakad, Pune-411057, Maharashtra", 555, 77, { align: "right" });
   doc.text("+91 86055 26603 / 9284664507", 555, 88, { align: "right" });
-  doc.text("info@velora.family | https://velora.family", 555, 99, { align: "right" });
+  doc.text("info@dsoftsit.com | https://dsoftsit.com", 555, 99, { align: "right" });
 
   // Center Red/Maroon ESTIMATE Title matching Image 1 & 2
   doc.setFont("helvetica", "bold");
@@ -380,7 +380,7 @@ export const generateClientSideBOQPdf = async (boq, options = {}) => {
     doc.text("Client Signature: _______________________", 40, currentY + 16);
 
     doc.setFont("helvetica", "bold");
-    doc.text("For VELORA ANTARAAL", 555, currentY + 16, { align: "right" });
+    doc.text("For DSOFTS IT", 555, currentY + 16, { align: "right" });
     doc.setFont("helvetica", "normal");
     doc.text("Authorized Signatory", 555, currentY + 38, { align: "right" });
 
@@ -390,12 +390,12 @@ export const generateClientSideBOQPdf = async (boq, options = {}) => {
     doc.setFont("helvetica", "bold");
     doc.setFontSize(7.5);
     doc.setTextColor(158, 123, 29);
-    doc.text("SPACES WITHIN, DESIGNED BEAUTIFULLY", 297.5, 802, { align: "center" });
+    doc.text("INNOVATIVE IT SOLUTIONS & DIGITAL EXCELLENCE", 297.5, 802, { align: "center" });
 
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7.5);
     doc.setTextColor(100, 100, 100);
-    doc.text("+91 86055 26603 | +91 820-8732741  •  info@velora.family  •  https://velora.family  •  Wakad, Pune, Maharashtra", 297.5, 814, { align: "center" });
+    doc.text("+91 86055 26603 | +91 820-8732741  •  info@dsoftsit.com  •  https://dsoftsit.com  •  Wakad, Pune, Maharashtra", 297.5, 814, { align: "center" });
 
     doc.save(`${boqNum}.pdf`);
     return;
@@ -459,12 +459,12 @@ export const generateClientSideBOQPdf = async (boq, options = {}) => {
   const currentUser = getCurrentUser() || { name: "Admin", role: "Super Admin" };
 
   const bankName = companySettings.bankName || tcTemplate.bankDetails?.bankName || "HDFC Bank Ltd";
-  const accHolder = companySettings.accountHolderName || tcTemplate.bankDetails?.accountHolder || "VELORA INTERIORS PRIVATE LIMITED";
+  const accHolder = companySettings.accountHolderName || tcTemplate.bankDetails?.accountHolder || "DSOFTS IT PRIVATE LIMITED";
   const accNum = companySettings.accountNumber || tcTemplate.bankDetails?.accountNumber || "50200067891234";
   const ifsc = companySettings.ifscCode || tcTemplate.bankDetails?.ifsc || "HDFC0001234";
   const branch = companySettings.branch || tcTemplate.bankDetails?.branch || "Wakad, Pune";
   const accType = companySettings.accountType || tcTemplate.bankDetails?.accountType || "Current Account";
-  const upiId = companySettings.upiId || "velora.interiors@hdfcbank";
+  const upiId = companySettings.upiId || "dsoftsit@hdfcbank";
 
   doc.setDrawColor(168, 50, 50);
   doc.setLineWidth(3);
@@ -602,7 +602,7 @@ export const generateClientSideBOQPdf = async (boq, options = {}) => {
   doc.text("Client Signature: _______________________", 40, currentY + 16);
 
   doc.setFont("helvetica", "bold");
-  doc.text("For VELORA ANTARAAL", 555, currentY + 16, { align: "right" });
+  doc.text("For DSOFTS IT", 555, currentY + 16, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.text("Authorized Signatory", 555, currentY + 38, { align: "right" });
 
@@ -618,12 +618,12 @@ export const generateClientSideBOQPdf = async (boq, options = {}) => {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7.5);
   doc.setTextColor(158, 123, 29);
-  doc.text("SPACES WITHIN, DESIGNED BEAUTIFULLY", 297.5, 802, { align: "center" });
+  doc.text("INNOVATIVE IT SOLUTIONS & DIGITAL EXCELLENCE", 297.5, 802, { align: "center" });
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(100, 100, 100);
-  doc.text(`${companySettings.phone || "+91 86055 26603"} | ${companySettings.altPhone || "+91 80555 26603"}  •  ${companySettings.email || "info@velora.family"}  •  ${companySettings.website || "https://velora.family"}  •  ${companySettings.address || "Wakad, Pune, Maharashtra"}`, 297.5, 814, { align: "center" });
+  doc.text(`${companySettings.phone || "+91 86055 26603"} | ${companySettings.altPhone || "+91 80555 26603"}  •  ${companySettings.email || "info@dsoftsit.com"}  •  ${companySettings.website || "https://dsoftsit.com"}  •  ${companySettings.address || "Wakad, Pune, Maharashtra"}`, 297.5, 814, { align: "center" });
 
   doc.save(`${boqNum}.pdf`);
 };
@@ -717,12 +717,12 @@ export const printBOQQuotation = (boq, options = {}) => {
   const userStamp = `Prepared & Printed by: ${currentUser?.name || "Admin"} (${currentUser?.role || "Staff"}) on ${new Date().toLocaleDateString("en-IN")} ${new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })}`;
 
   const bankName = companySettings.bankName || tcTemplate.bankDetails?.bankName || "HDFC Bank Ltd";
-  const accHolder = companySettings.accountHolderName || tcTemplate.bankDetails?.accountHolder || "VELORA INTERIORS PRIVATE LIMITED";
+  const accHolder = companySettings.accountHolderName || tcTemplate.bankDetails?.accountHolder || "DSOFTS IT PRIVATE LIMITED";
   const accNum = companySettings.accountNumber || tcTemplate.bankDetails?.accountNumber || "50200067891234";
   const ifsc = companySettings.ifscCode || tcTemplate.bankDetails?.ifsc || "HDFC0001234";
   const branch = companySettings.branch || tcTemplate.bankDetails?.branch || "Wakad, Pune";
   const accType = companySettings.accountType || tcTemplate.bankDetails?.accountType || "Current Account";
-  const upiId = companySettings.upiId || "velora.interiors@hdfcbank";
+  const upiId = companySettings.upiId || "dsoftsit@hdfcbank";
   const qrUrl = companySettings.qrCodeUrl || "";
 
   const printWindow = window.open("", "_blank");
@@ -1133,7 +1133,7 @@ export const printBOQQuotation = (boq, options = {}) => {
 <body>
   <div class="no-print" style="background: #0f172a; color: #fff; padding: 12px 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
     <div style="display: flex; align-items: center; gap: 14px;">
-      <span style="font-weight: 900; font-size: 14px; color: #60a5fa; letter-spacing: 0.5px;">VELORA INTERIOR ESTIMATE & BOQ</span>
+      <span style="font-weight: 900; font-size: 14px; color: #60a5fa; letter-spacing: 0.5px;">DSOFTS IT ESTIMATE & BOQ</span>
       <span style="color: #94a3b8; font-size: 12px;">| Print or Select "Save as PDF"</span>
     </div>
 
@@ -1166,12 +1166,12 @@ export const printBOQQuotation = (boq, options = {}) => {
       </div>
 
       <div class="brand-box">
-        <h1>VELORA ANTARAAL</h1>
-        <div class="tagline">INTERIOR DESIGN | DÉCOR | RETAIL</div>
-        <p>Shop No. 242/2/B1, Bafna Niwas, Aundh Hinjewadi Road,</p>
+        <h1>DSOFTS IT</h1>
+        <div class="tagline">IT SOLUTIONS | SOFTWARE | CONSULTING</div>
+        <p>Shop No. 4, Tech Plaza, Aundh Hinjewadi Road,</p>
         <p>Wakad, Pune-411057, Maharashtra, India</p>
         <p>+91 86055 26603 / 9284664507</p>
-        <p>info@velora.family | https://velora.family</p>
+        <p>info@dsoftsit.com | https://dsoftsit.com</p>
       </div>
     </div>
 
@@ -1381,14 +1381,14 @@ export const printBOQQuotation = (boq, options = {}) => {
           <div style="font-size: 11px; font-style: italic; color: #78716c; margin-top: 6px;">${userStamp}</div>
         </div>
         <div style="text-align: right;">
-          <p style="font-weight: 800; color: #2563eb; margin: 0;">For VELORA ANTARAAL</p>
+          <p style="font-weight: 800; color: #2563eb; margin: 0;">For DSOFTS IT</p>
           <p style="margin: 30px 0 0 0; color: #57534e;">Authorized Signatory</p>
         </div>
       </div>
 
       <div class="footer-bar">
-        <div><strong>SPACES WITHIN, DESIGNED BEAUTIFULLY</strong></div>
-        <div>${companySettings.phone || "+91 86055 26603"} | ${companySettings.altPhone || "+91 820-8732741"}  •  ${companySettings.email || "info@velora.family"}  •  ${companySettings.website || "https://velora.family"}  •  ${companySettings.address || "Wakad, Pune, Maharashtra, India"}</div>
+        <div><strong>INNOVATIVE IT SOLUTIONS & DIGITAL EXCELLENCE</strong></div>
+        <div>${companySettings.phone || "+91 86055 26603"} | ${companySettings.altPhone || "+91 820-8732741"}  •  ${companySettings.email || "info@dsoftsit.com"}  •  ${companySettings.website || "https://dsoftsit.com"}  •  ${companySettings.address || "Wakad, Pune, Maharashtra, India"}</div>
       </div>
     </div>
 
@@ -1400,13 +1400,13 @@ export const printBOQQuotation = (boq, options = {}) => {
           <div style="font-size: 11px; font-style: italic; color: #78716c; margin-top: 6px;">${userStamp}</div>
         </div>
         <div style="text-align: right;">
-          <p style="font-weight: 800; color: #2563eb; margin: 0;">For VELORA ANTARAAL</p>
+          <p style="font-weight: 800; color: #2563eb; margin: 0;">For DSOFTS IT</p>
           <p style="margin: 30px 0 0 0; color: #57534e;">Authorized Signatory</p>
         </div>
       </div>
       <div class="footer-bar">
-        <div><strong>SPACES WITHIN, DESIGNED BEAUTIFULLY</strong></div>
-        <div>${companySettings.phone || "+91 86055 26603"} | ${companySettings.altPhone || "+91 820-8732741"}  •  ${companySettings.email || "info@velora.family"}  •  ${companySettings.website || "https://velora.family"}  •  ${companySettings.address || "Wakad, Pune, Maharashtra, India"}</div>
+        <div><strong>INNOVATIVE IT SOLUTIONS & DIGITAL EXCELLENCE</strong></div>
+        <div>${companySettings.phone || "+91 86055 26603"} | ${companySettings.altPhone || "+91 820-8732741"}  •  ${companySettings.email || "info@dsoftsit.com"}  •  ${companySettings.website || "https://dsoftsit.com"}  •  ${companySettings.address || "Wakad, Pune, Maharashtra, India"}</div>
       </div>
     </div>
   </div>
@@ -1486,25 +1486,25 @@ export const generateClientSideInvoicePdf = (invoice, isPrint = false) => {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10.5);
   doc.setTextColor(37, 99, 235);
-  doc.text("VELORA", 100, 56, { align: "center" });
+  doc.text("DSOFTS IT", 100, 56, { align: "center" });
   doc.setFontSize(7);
   doc.setFont("helvetica", "normal");
-  doc.text("— ANTARAAL —", 100, 68, { align: "center" });
+  doc.text("— SOLUTIONS —", 100, 68, { align: "center" });
 
   // Company Details (Left below logo)
   doc.setFont("helvetica", "bold");
   doc.setFontSize(9.5);
   doc.setTextColor(15, 23, 42);
-  doc.text("VELORA ANTARAAL", 40, 100);
+  doc.text("DSOFTS IT", 40, 100);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(51, 65, 85);
-  const addrLines = doc.splitTextToSize("Shop No. 242/2/B1, Bafna Niwas, Aundh Hinjewadi Wakad Chowk, Wakad, Pune - 411057, Maharashtra", 240);
+  const addrLines = doc.splitTextToSize("Shop No. 4, Tech Plaza, Aundh Hinjewadi Wakad Chowk, Wakad, Pune - 411057, Maharashtra", 240);
   doc.text(addrLines, 40, 112);
   let compY = 112 + (addrLines.length * 9);
   doc.text("Phone: +91 86055 26603 / 80555 26603", 40, compY);
-  doc.text("Email: info@velora.family | https://velora.family", 40, compY + 10);
+  doc.text("Email: info@dsoftsit.com | https://dsoftsit.com", 40, compY + 10);
   doc.setFont("helvetica", "bold");
   doc.text("GSTIN: 27CHCPS9945R1Z4  |  PAN: CHCPS9945R", 40, compY + 20);
 
@@ -1694,7 +1694,7 @@ export const generateClientSideInvoicePdf = (invoice, isPrint = false) => {
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
   doc.setTextColor(51, 65, 85);
-  doc.text("Account Holder: VELORA ANTARAAL", 48, bankY + 22);
+  doc.text("Account Holder: DSOFTS IT", 48, bankY + 22);
   doc.text("Account Number: 50200073374185", 48, bankY + 33);
   doc.text("IFSC Code: HDFC0000282    |    Branch: WAKAD, PUNE", 48, bankY + 44);
   doc.text("Bank Name: HDFC Bank      |    Account Type: Current Account", 48, bankY + 55);
@@ -1749,7 +1749,7 @@ export const generateClientSideInvoicePdf = (invoice, isPrint = false) => {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(10.5);
   doc.setTextColor(180, 83, 9);
-  doc.text("TERMS & CONDITIONS — VELORA ANTARAAL", 48, 51);
+  doc.text("TERMS & CONDITIONS — DSOFTS IT", 48, 51);
 
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
@@ -1838,7 +1838,7 @@ export const generateClientSideInvoicePdf = (invoice, isPrint = false) => {
   doc.text("Date: _______________________", 40, p2Y + 16);
 
   doc.setFont("helvetica", "bold");
-  doc.text("For VELORA ANTARAAL", 555, p2Y, { align: "right" });
+  doc.text("For DSOFTS IT", 555, p2Y, { align: "right" });
   doc.setFont("helvetica", "normal");
   doc.text("Authorized Signatory", 555, p2Y + 22, { align: "right" });
 
@@ -1847,11 +1847,11 @@ export const generateClientSideInvoicePdf = (invoice, isPrint = false) => {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(7.5);
   doc.setTextColor(180, 83, 9);
-  doc.text("SPACES WITHIN, DESIGNED BEAUTIFULLY", 297.5, 802, { align: "center" });
+  doc.text("INNOVATIVE IT SOLUTIONS & DIGITAL EXCELLENCE", 297.5, 802, { align: "center" });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(7.5);
   doc.setTextColor(100, 100, 100);
-  doc.text("+91 86055 26603  •  info@velora.family  •  https://velora.family  •  Wakad, Pune, Maharashtra", 297.5, 814, { align: "center" });
+  doc.text("+91 86055 26603  •  info@dsoftsit.com  •  https://dsoftsit.com  •  Wakad, Pune, Maharashtra", 297.5, 814, { align: "center" });
 
   doc.save(`Tax_Invoice_${invNum}.pdf`);
 };
@@ -2262,7 +2262,7 @@ export const printInvoice = (invoiceOrId, options = {}) => {
 <body>
   <div class="no-print" style="background: #0f172a; color: #fff; padding: 10px 20px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; position: sticky; top: 0; z-index: 999; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
     <div style="display: flex; align-items: center; gap: 12px;">
-      <span style="font-weight: 900; font-size: 13.5px; color: #f59e0b; letter-spacing: 0.5px;">VELORA LUXURY TAX INVOICE (${invNum})</span>
+      <span style="font-weight: 900; font-size: 13.5px; color: #f59e0b; letter-spacing: 0.5px;">DSOFTS IT TAX INVOICE (${invNum})</span>
       <span style="color: #94a3b8; font-size: 11.5px;">| Print or Select "Save as PDF"</span>
     </div>
 
@@ -2287,12 +2287,12 @@ export const printInvoice = (invoiceOrId, options = {}) => {
     <div class="header-row">
       <div>
         <div class="brand-badge">
-          <span>VELORA ANTARAAL</span>
+          <span>DSOFTS IT</span>
         </div>
-        <div class="brand-subtitle">INTERIOR DESIGN | DÉCOR | TURNKEY EXECUTION</div>
+        <div class="brand-subtitle">IT SOLUTIONS | SOFTWARE | CONSULTING</div>
         <div class="company-info">
-          <div>Shop No. 242/2/B1, Bafna Niwas, Aundh Hinjewadi Wakad Chowk, Wakad, Pune - 411057, Maharashtra</div>
-          <div>Phone: +91 86055 26603 / 80555 26603  |  Email: info@velora.family</div>
+          <div>Shop No. 4, Tech Plaza, Aundh Hinjewadi Wakad Chowk, Wakad, Pune - 411057, Maharashtra</div>
+          <div>Phone: +91 86055 26603 / 80555 26603  |  Email: info@dsoftsit.com</div>
           <div><strong>GSTIN:</strong> 27CHCPS9945R1Z4  |  <strong>PAN:</strong> CHCPS9945R  |  <strong>State:</strong> Maharashtra (27)</div>
         </div>
       </div>
@@ -2408,7 +2408,7 @@ export const printInvoice = (invoiceOrId, options = {}) => {
       <div class="bank-card">
         <h4>Bank Details & Payment Instructions</h4>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; font-size: 11.5px; color: #334155;">
-          <div>Account Holder: <strong>VELORA ANTARAAL</strong></div>
+          <div>Account Holder: <strong>DSOFTS IT</strong></div>
           <div>Account Number: <strong>50200073374185</strong></div>
           <div>IFSC Code: <strong>HDFC0000282</strong></div>
           <div>Branch: <strong>WAKAD, PUNE</strong></div>
@@ -2433,15 +2433,15 @@ export const printInvoice = (invoiceOrId, options = {}) => {
 
     <!-- DEDICATED TERMS & CONDITIONS SECTION -->
     <div id="tc-page-section" class="tc-page-container" style="${includeTerms ? '' : 'display: none;'}">
-      <div class="tc-header">TERMS & CONDITIONS — VELORA ANTARAAL</div>
+      <div class="tc-header">TERMS & CONDITIONS — DSOFTS IT</div>
       <ol class="tc-list">
-        <li><strong>1. Scope of Work: </strong>The scope of work includes interior design consultancy, space planning, material selection, 2D/3D drawings, modular furniture design, civil execution, electrical work, false ceiling, and turnkey execution as agreed in the final quotation/work order. Any work outside the approved quotation shall be treated as additional work and billed separately.</li>
-        <li><strong>2. Design & Execution Process: </strong>1. Initial consultation & site survey | 2. Concept design and layout planning | 3. 3D Visualization & material selection | 4. Execution signoff and project handover.</li>
-        <li><strong>3. Quotation & Pricing: </strong>All quotations are valid for 15 days from the date of issue. Prices are based on current market rates of materials and labour. Customizations requested after final approval will be charged additionally.</li>
-        <li><strong>4. Payment Terms: </strong>10% Advance (Booking & Design Initiation) | 40% (Before Factory Production / Execution) | 40% (During Site Execution Stage) | 10% (Before Final Handover). All payments must be made as per agreed timelines.</li>
-        <li><strong>5. Project Timeline: </strong>Timelines are estimated based on project scope and site conditions. Delays caused due to civil issues, client-side approvals, vendor delays, or force majeure events shall not be company liability.</li>
-        <li><strong>6. Modular Furniture Warranty: </strong>5-Year warranty for modular furniture manufacturing defects. Hardware warranty shall be as per respective brand manufacturer policy (Ebco, Hettich, etc.). Moisture damage or unauthorized modifications are not covered.</li>
-        <li><strong>7. Ownership & Intellectual Property: </strong>All drawings, 3D renders, and designs remain intellectual property of VELORA ANTARAAL unless agreed otherwise in writing.</li>
+        <li><strong>1. Scope of Work: </strong>The scope of work includes software development, IT consulting, cloud infrastructure, and execution as agreed in the final quotation/work order. Any work outside the approved quotation shall be treated as additional work and billed separately.</li>
+        <li><strong>2. Design & Execution Process: </strong>1. Initial consultation & requirements | 2. Architecture & prototype planning | 3. Development & QA | 4. Deployment and project handover.</li>
+        <li><strong>3. Quotation & Pricing: </strong>All quotations are valid for 15 days from the date of issue. Prices are based on current scope of work. Customizations requested after final approval will be charged additionally.</li>
+        <li><strong>4. Payment Terms: </strong>10% Advance (Booking & Design Initiation) | 40% (Milestone 1) | 40% (Milestone 2) | 10% (Before Final Handover). All payments must be made as per agreed timelines.</li>
+        <li><strong>5. Project Timeline: </strong>Timelines are estimated based on project scope. Delays caused due to client-side approvals or force majeure events shall not be company liability.</li>
+        <li><strong>6. Warranty & Support: </strong>Standard maintenance and support for deliverables as per agreement. Unauthorized modifications by third parties are not covered.</li>
+        <li><strong>7. Ownership & Intellectual Property: </strong>All project deliverables remain intellectual property of DSOFTS IT until full settlement of invoices.</li>
         <li><strong>8. Dispute Resolution: </strong>Any disputes arising shall be subject to the jurisdiction of Pune, Maharashtra courts only.</li>
       </ol>
 
@@ -2451,14 +2451,14 @@ export const printInvoice = (invoiceOrId, options = {}) => {
           <p style="font-size: 11px; color: #64748b; margin-top: 4px;">Date: ___________________________</p>
         </div>
         <div style="text-align: right;">
-          <p style="font-weight: 800; color: #b45309; margin: 0;">For VELORA ANTARAAL</p>
+          <p style="font-weight: 800; color: #b45309; margin: 0;">For DSOFTS IT</p>
           <p style="margin: 28px 0 0 0; color: #475569;">Authorized Signatory</p>
         </div>
       </div>
 
       <div class="footer-bar">
-        <div><strong>SPACES WITHIN, DESIGNED BEAUTIFULLY</strong></div>
-        <div>+91 86055 26603 | +91 80555 26603  •  info@velora.family  •  https://velora.family  •  Wakad, Pune, Maharashtra, India</div>
+        <div><strong>INNOVATIVE IT SOLUTIONS & DIGITAL EXCELLENCE</strong></div>
+        <div>+91 86055 26603 | +91 80555 26603  •  info@dsoftsit.com  •  https://dsoftsit.com  •  Wakad, Pune, Maharashtra, India</div>
       </div>
     </div>
 
@@ -2470,13 +2470,13 @@ export const printInvoice = (invoiceOrId, options = {}) => {
           <p style="font-size: 11px; color: #64748b; margin-top: 4px;">Date: ___________________________</p>
         </div>
         <div style="text-align: right;">
-          <p style="font-weight: 800; color: #b45309; margin: 0;">For VELORA ANTARAAL</p>
+          <p style="font-weight: 800; color: #b45309; margin: 0;">For DSOFTS IT</p>
           <p style="margin: 28px 0 0 0; color: #475569;">Authorized Signatory</p>
         </div>
       </div>
       <div class="footer-bar">
-        <div><strong>SPACES WITHIN, DESIGNED BEAUTIFULLY</strong></div>
-        <div>+91 86055 26603 | +91 80555 26603  •  info@velora.family  •  https://velora.family  •  Wakad, Pune, Maharashtra, India</div>
+        <div><strong>INNOVATIVE IT SOLUTIONS & DIGITAL EXCELLENCE</strong></div>
+        <div>+91 86055 26603 | +91 80555 26603  •  info@dsoftsit.com  •  https://dsoftsit.com  •  Wakad, Pune, Maharashtra, India</div>
       </div>
     </div>
   </div>
@@ -2591,7 +2591,7 @@ export const exportAllInvoicesCsv = (invoices) => {
     status: inv.status || "Unpaid"
   }));
 
-  downloadCsv("Velora_Invoices_Master_Summary", columns, data);
+  downloadCsv("DsoftsIT_Invoices_Master_Summary", columns, data);
 };
 
 /**
@@ -2599,7 +2599,7 @@ export const exportAllInvoicesCsv = (invoices) => {
  */
 export const generateClientSideReceiptPdf = (payment) => {
   const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
-  const recNum = payment?.receiptNumber || "REC-VEL-2001";
+  const recNum = payment?.receiptNumber || "REC-DSOFTS-2001";
   const clientName = payment?.clientName || "Valued Client";
   const amount = Number(payment?.amount) || 0;
 
@@ -2610,7 +2610,7 @@ export const generateClientSideReceiptPdf = (payment) => {
   doc.setFont("helvetica", "bold");
   doc.setFontSize(18);
   doc.setTextColor(158, 123, 29);
-  doc.text("VELORA LUXURY INTERIORS", 40, 55);
+  doc.text("DSOFTS IT", 40, 55);
 
   doc.setFontSize(8);
   doc.setFont("helvetica", "italic");

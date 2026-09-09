@@ -51,7 +51,7 @@ export default function WebsiteLeads() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-black text-slate-900 tracking-tight">Website Direct Inquiries</h1>
-        <p className="text-xs text-slate-500 mt-1 font-medium">Automatically captured inquiries submitted from velora website</p>
+        <p className="text-xs text-slate-500 mt-1 font-medium">Automatically captured inquiries submitted from Dsofts IT website</p>
       </div>
 
       <DataTable
