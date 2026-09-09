@@ -1,0 +1,489 @@
+import React, { useState, useEffect } from "react";
+import { Plus, Trash2, Calculator, CheckCircle2 } from "lucide-react";
+import erpApi from "../services/erpService";
+
+const SPACE_TEMPLATES = [
+  "Living Room",
+  "Master Bedroom",
+  "Modular Kitchen",
+  "Dining Area",
+  "Balcony",
+  "Kids Bedroom",
+  "Bathroom"
+];
+
+export default function EstimateBuilder({ onSaveBOQ, initialClientName = "", projectId = "", leadId = "" }) {
+  const [clientName, setClientName] = useState(initialClientName);
+  const [preparedBy, setPreparedBy] = useState("Velora Senior Architect");
+  
+  // Association states
+  const [associationType, setAssociationType] = useState(
+    projectId ? "project" : leadId ? "lead" : "manual"
+  );
+  const [projectList, setProjectList] = useState([]);
+  const [leadList, setLeadList] = useState([]);
+  const [materials, setMaterials] = useState([]);
+  const [selectedProjectId, setSelectedProjectId] = useState(projectId);
+  const [selectedLeadId, setSelectedLeadId] = useState(leadId);
+
+  useEffect(() => {
+    // Load lists for standalone mode
+    if (!projectId && !leadId) {
+      erpApi.getProjects({ limit: 100 }).then((res) => {
+        if (res?.data) setProjectList(res.data);
+      });
+      erpApi.getLeads({ limit: 100 }).then((res) => {
+        if (res?.data) setLeadList(res.data);
+      });
+    }
+    // Load catalog items for selection
+    erpApi.getMaterials().then((res) => {
+      if (res?.data) setMaterials(res.data);
+    });
+  }, [projectId, leadId]);
+
+  const [rooms, setRooms] = useState([
+    {
+      name: "Living Room",
+      items: [
+        { itemName: "TV Console Unit (Italian Marble + Veneer)", material: "Bespoke Italian Marble", quantity: 1, unit: "unit", price: 185000, discountPercent: 5, gstPercent: 18 }
+      ]
+    },
+    {
+      name: "Master Bedroom",
+      items: [
+        { itemName: "Walk-in Wardrobe (Floor-to-Ceiling Fluted Glass)", material: "Commercial Plywood + Fluted Glass", quantity: 120, unit: "sq.ft", price: 1850, discountPercent: 0, gstPercent: 18 }
+      ]
+    }
+  ]);
+
+  const addRoom = (name = "") => {
+    const roomName = name || `New Room ${rooms.length + 1}`;
+    setRooms([...rooms, { name: roomName, items: [] }]);
+  };
+
+  const removeRoom = (rIdx) => {
+    setRooms(rooms.filter((_, idx) => idx !== rIdx));
+  };
+
+  const addItemToRoom = (rIdx, predefinedMat = null) => {
+    const updated = [...rooms];
+    if (predefinedMat) {
+      updated[rIdx].items.push({
+        itemName: predefinedMat.name,
+        material: `${predefinedMat.category} / ${predefinedMat.brand || "Standard"}`,
+        quantity: 1,
+        unit: predefinedMat.unit || "unit",
+        price: predefinedMat.unitPrice || 0,
+        discountPercent: 0,
+        gstPercent: 18
+      });
+    } else {
+      updated[rIdx].items.push({
+        itemName: "Custom Joinery",
+        material: "Premium HDMR",
+        quantity: 1,
+        unit: "unit",
+        price: 25000,
+        discountPercent: 0,
+        gstPercent: 18
+      });
+    }
+    setRooms(updated);
+  };
+
+  const updateItem = (rIdx, iIdx, field, val) => {
+    const updated = [...rooms];
+    updated[rIdx].items[iIdx][field] = val;
+    setRooms(updated);
+  };
+
+  const removeItem = (rIdx, iIdx) => {
+    const updated = [...rooms];
+    updated[rIdx].items.splice(iIdx, 1);
+    setRooms(updated);
+  };
+
+  // Computations
+  let subtotal = 0;
+  let gstTotal = 0;
+
+  rooms.forEach((room) => {
+    room.items.forEach((item) => {
+      const lineSub = (item.quantity || 0) * (item.price || 0);
+      const discount = lineSub * ((item.discountPercent || 0) / 100);
+      const netLine = lineSub - discount;
+      const gst = netLine * ((item.gstPercent || 18) / 100);
+      subtotal += netLine;
+      gstTotal += gst;
+    });
+  });
+
+  const grandTotal = subtotal + gstTotal;
+
+  const handleSave = () => {
+    if (!clientName) return alert("Please specify client name");
+    if (!preparedBy) return alert("Please specify who prepared the estimate");
+
+    if (rooms.length === 0 || rooms.some(r => r.items.length === 0)) {
+      return alert("Please add at least one room with items to save the estimate");
+    }
+
+    // Validate that no item has an empty itemName
+    for (let r = 0; r < rooms.length; r++) {
+      const room = rooms[r];
+      for (let i = 0; i < room.items.length; i++) {
+        const item = room.items[i];
+        if (!item.itemName || !item.itemName.trim()) {
+          return alert(`Please enter a valid Item Name / Specification for item ${i + 1} in room "${room.name}".`);
+        }
+      }
+    }
+
+    onSaveBOQ({
+      clientName,
+      preparedBy,
+      rooms,
+      subtotal,
+      gstTotal,
+      grandTotal,
+      project: projectId || selectedProjectId || undefined,
+      lead: leadId || selectedLeadId || undefined
+    });
+  };
+
+  return (
+    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm space-y-6">
+      
+      {/* Title Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+        <div>
+          <h2 className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+            <Calculator size={20} className="text-blue-600" />
+            Room-Wise Estimate Creator
+          </h2>
+          <p className="text-xs text-slate-500 mt-1">Configure room specifications with catalog items or custom entries</p>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => addRoom()}
+            className="flex items-center gap-2 px-3.5 py-2 text-xs font-bold text-slate-700 bg-slate-50 border border-slate-200 rounded-xl hover:border-blue-300 hover:bg-blue-50 transition cursor-pointer"
+          >
+            <Plus size={14} className="text-blue-600" />
+            <span>Add Custom Room</span>
+          </button>
+
+          <button
+            onClick={handleSave}
+            className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-xs transition cursor-pointer"
+          >
+            <CheckCircle2 size={14} />
+            <span>Save & Generate Estimate</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Quick Space Template Tags */}
+      <div className="flex flex-wrap gap-2 items-center bg-slate-50 border border-slate-200 p-3.5 rounded-xl">
+        <span className="text-[10px] font-black text-slate-500 uppercase tracking-wider mr-1">Quick Add Space:</span>
+        {SPACE_TEMPLATES.map((tpl) => (
+          <button
+            key={tpl}
+            type="button"
+            onClick={() => addRoom(tpl)}
+            className="px-2.5 py-1 bg-white hover:bg-blue-50 border border-slate-200 hover:border-blue-300 text-[11px] font-bold text-blue-600 rounded-lg transition cursor-pointer"
+          >
+            + {tpl}
+          </button>
+        ))}
+      </div>
+
+      {/* General Meta Info */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {!projectId && !leadId && (
+          <div className="sm:col-span-2 bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-3">
+            <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider">
+              Associate Estimate With
+            </label>
+            <div className="flex gap-2">
+              {[
+                { id: "manual", label: "Standalone Manual Client" },
+                { id: "lead", label: "Design Lead Profile" },
+                { id: "project", label: "Active Project" }
+              ].map((opt) => (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => {
+                    setAssociationType(opt.id);
+                    if (opt.id === "manual") {
+                      setClientName("");
+                      setSelectedLeadId("");
+                      setSelectedProjectId("");
+                    }
+                  }}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition border cursor-pointer ${
+                    associationType === opt.id
+                      ? "bg-blue-600 text-white border-blue-600 shadow-2xs"
+                      : "bg-white text-slate-600 border-slate-200 hover:text-slate-900 hover:bg-slate-50"
+                  }`}
+                >
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+
+            {associationType === "lead" && (
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold text-slate-500 uppercase">Select Client Lead</label>
+                <select
+                  value={selectedLeadId}
+                  onChange={(e) => {
+                    const lId = e.target.value;
+                    setSelectedLeadId(lId);
+                    setSelectedProjectId("");
+                    const match = leadList.find((l) => l._id === lId);
+                    if (match) setClientName(match.name);
+                  }}
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                >
+                  <option value="">-- Choose Lead Profile --</option>
+                  {leadList.map((lead) => (
+                    <option key={lead._id} value={lead._id}>
+                      {lead.name} ({lead.propertyType} - {lead.city})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {associationType === "project" && (
+              <div className="space-y-1">
+                <label className="block text-[10px] font-bold text-slate-500 uppercase">Select Active Project</label>
+                <select
+                  value={selectedProjectId}
+                  onChange={(e) => {
+                    const pId = e.target.value;
+                    setSelectedProjectId(pId);
+                    setSelectedLeadId("");
+                    const match = projectList.find((p) => p._id === pId);
+                    if (match) setClientName(match.clientName);
+                  }}
+                  className="w-full px-3 py-2 bg-white border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                >
+                  <option value="">-- Choose Project --</option>
+                  {projectList.map((proj) => (
+                    <option key={proj._id} value={proj._id}>
+                      {proj.heading} (Client: {proj.clientName})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">
+            Client Name {associationType !== "manual" && <span className="text-blue-600 font-bold">(Auto-selected)</span>}
+          </label>
+          <input
+            type="text"
+            placeholder="e.g. Mr. Rajesh Sharma"
+            value={clientName}
+            disabled={associationType !== "manual" && !projectId && !leadId}
+            onChange={(e) => setClientName(e.target.value)}
+            className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 disabled:opacity-75 disabled:cursor-not-allowed"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Prepared By</label>
+          <input
+            type="text"
+            value={preparedBy}
+            onChange={(e) => setPreparedBy(e.target.value)}
+            className="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+          />
+        </div>
+      </div>
+
+      {/* Rooms List */}
+      <div className="space-y-6">
+        {rooms.map((room, rIdx) => (
+          <div key={rIdx} className="bg-slate-50/70 border border-slate-200 rounded-xl p-4 space-y-3">
+            
+            {/* Room Header Controls */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-2.5">
+              <input
+                type="text"
+                value={room.name}
+                onChange={(e) => {
+                  const updated = [...rooms];
+                  updated[rIdx].name = e.target.value;
+                  setRooms(updated);
+                }}
+                className="bg-transparent font-bold text-sm text-blue-600 focus:outline-none border-b border-slate-300 w-full sm:w-64"
+              />
+
+              <div className="flex items-center gap-3 self-end sm:self-auto">
+                {/* Catalog Quick-Add Selector */}
+                <select
+                  value=""
+                  onChange={(e) => {
+                    const matName = e.target.value;
+                    if (!matName) return;
+                    const mat = materials.find(m => m.name === matName);
+                    if (mat) addItemToRoom(rIdx, mat);
+                  }}
+                  className="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs text-slate-700 focus:outline-none focus:border-blue-500 max-w-[170px] shadow-2xs font-semibold cursor-pointer"
+                >
+                  <option value="">+ Add from Catalog</option>
+                  {materials.map((m) => (
+                    <option key={m._id} value={m.name}>
+                      {m.name} (₹{m.unitPrice}/{m.unit})
+                    </option>
+                  ))}
+                </select>
+
+                <button
+                  onClick={() => addItemToRoom(rIdx)}
+                  className="px-2 py-1 bg-white hover:bg-slate-100 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 cursor-pointer transition"
+                >
+                  + Custom Item
+                </button>
+
+                <button 
+                  onClick={() => removeRoom(rIdx)} 
+                  className="p-1 text-slate-400 hover:text-rose-600 transition cursor-pointer"
+                  title="Delete Room"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+
+            {/* Room items table */}
+            {room.items.length === 0 ? (
+              <div className="py-6 text-center text-slate-400 italic text-xs">
+                No items added in this room yet. Add from catalog or insert a custom item row.
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs text-slate-700 min-w-[700px]">
+                  <thead className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">
+                    <tr>
+                      <th className="py-2 px-1">Item Specification</th>
+                      <th className="py-2 px-1">Material / Brand</th>
+                      <th className="py-2 px-1 w-16">Qty</th>
+                      <th className="py-2 px-1 w-16">Unit</th>
+                      <th className="py-2 px-1 w-24">Price (₹)</th>
+                      <th className="py-2 px-1 w-20">GST %</th>
+                      <th className="py-2 px-1 w-24">Total</th>
+                      <th className="py-2 px-1 w-8"></th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200/60">
+                    {room.items.map((item, iIdx) => {
+                      const lineVal = (item.quantity || 0) * (item.price || 0);
+                      const lineGst = lineVal * ((item.gstPercent || 18) / 100);
+                      const lineTotal = lineVal + lineGst;
+
+                      return (
+                        <tr key={iIdx}>
+                          <td className="py-1.5 px-1">
+                            <input
+                              type="text"
+                              value={item.itemName}
+                              onChange={(e) => updateItem(rIdx, iIdx, "itemName", e.target.value)}
+                              placeholder="e.g. Wardrobe shutters"
+                              className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs text-slate-800 focus:border-blue-500 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-1.5 px-1">
+                            <input
+                              type="text"
+                              value={item.material}
+                              onChange={(e) => updateItem(rIdx, iIdx, "material", e.target.value)}
+                              placeholder="e.g. Plywood + Laminate"
+                              className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs text-slate-800 focus:border-blue-500 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-1.5 px-1">
+                            <input
+                              type="number"
+                              value={item.quantity}
+                              onChange={(e) => updateItem(rIdx, iIdx, "quantity", Number(e.target.value))}
+                              className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs text-slate-800 focus:border-blue-500 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-1.5 px-1">
+                            <input
+                              type="text"
+                              value={item.unit}
+                              onChange={(e) => updateItem(rIdx, iIdx, "unit", e.target.value)}
+                              className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs text-slate-800 focus:border-blue-500 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-1.5 px-1">
+                            <input
+                              type="number"
+                              value={item.price}
+                              onChange={(e) => updateItem(rIdx, iIdx, "price", Number(e.target.value))}
+                              className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs text-slate-800 focus:border-blue-500 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-1.5 px-1">
+                            <input
+                              type="number"
+                              value={item.gstPercent}
+                              onChange={(e) => updateItem(rIdx, iIdx, "gstPercent", Number(e.target.value))}
+                              className="w-full bg-white border border-slate-200 rounded px-2 py-1 text-xs text-slate-800 focus:border-blue-500 focus:outline-none"
+                            />
+                          </td>
+                          <td className="py-1.5 px-1 font-bold text-blue-600">
+                            ₹{Math.round(lineTotal).toLocaleString("en-IN")}
+                          </td>
+                          <td className="py-1.5 px-1">
+                            <button 
+                              onClick={() => removeItem(rIdx, iIdx)} 
+                              className="text-slate-400 hover:text-rose-600 transition cursor-pointer"
+                              title="Delete Item"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Grand Totals Summary Card */}
+      <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">
+        <div className="text-slate-500 font-medium">
+          Total Items: <span className="text-slate-900 font-bold">{rooms.reduce((a, r) => a + r.items.length, 0)}</span>
+        </div>
+        <div className="flex items-center gap-6">
+          <div>
+            <span className="text-slate-500 block">Subtotal:</span>
+            <span className="font-bold text-slate-900 text-sm">₹{Math.round(subtotal).toLocaleString("en-IN")}</span>
+          </div>
+          <div>
+            <span className="text-slate-500 block">GST (18%):</span>
+            <span className="font-bold text-blue-600 text-sm">₹{Math.round(gstTotal).toLocaleString("en-IN")}</span>
+          </div>
+          <div className="pl-4 border-l border-slate-200">
+            <span className="text-slate-500 block font-bold uppercase tracking-wider text-[10px]">Grand Total:</span>
+            <span className="font-black text-blue-600 text-lg">₹{Math.round(grandTotal).toLocaleString("en-IN")}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
