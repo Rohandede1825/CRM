@@ -201,6 +201,9 @@ export const erpApi = {
   getSubscriptionStatus: async () => (await api.get("/subscription/status")).data,
   getPlans: async () => (await api.get("/subscription/plans")).data,
   changePlan: async (plan, billingCycle = "monthly") => (await api.post("/subscription/change-plan", { plan, billingCycle })).data,
+  createRazorpayOrder: async (plan, billingCycle = "monthly") => (await api.post("/subscription/razorpay/order", { plan, billingCycle })).data,
+  verifyRazorpayPayment: async (paymentDetails) => (await api.post("/subscription/razorpay/verify", paymentDetails)).data,
+  getSubscriptionPayments: async () => (await api.get("/subscription/payments")).data,
 
   // Activity Logs & Reports
   getActivityLogs: async (params) => (await api.get("/erp/activity-logs", { params })).data,

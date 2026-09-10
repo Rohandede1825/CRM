@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import AdminLayout from "./components/AdminLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { isAuthenticated } from "./services/authService";
 
 import BrandLanding from "./pages/BrandLanding";
 import Login from "./pages/Login";
@@ -28,15 +27,10 @@ import SettingsManager from "./pages/SettingsManager";
 import BillingManager from "./pages/BillingManager";
 
 function App() {
-  const isAuth = isAuthenticated();
-
   return (
     <Routes>
-      {/* Default Dsofts IT CRM Brand & Showcase Page */}
-      <Route
-        path="/"
-        element={isAuth ? <Navigate to="/dashboard" replace /> : <BrandLanding />}
-      />
+      {/* Always open the public landing page first, including for signed-in users. */}
+      <Route path="/" element={<BrandLanding />} />
       <Route path="/portal" element={<BrandLanding />} />
       <Route path="/brand" element={<BrandLanding />} />
 

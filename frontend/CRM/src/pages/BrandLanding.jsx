@@ -31,14 +31,27 @@ import {
   QrCode,
   Shield,
   Headphones,
+  Menu,
+  X,
 } from "lucide-react";
 import { isAuthenticated } from "../services/authService";
 
 export default function BrandLanding() {
   const isAuth = isAuthenticated();
+  const primaryPath = isAuth ? "/dashboard" : "/login";
+  const primaryLabel = isAuth ? "Open CRM Workspace" : "Login to Client CRM";
   const [activeTab, setActiveTab] = useState("boq");
   const [billingPeriod, setBillingPeriod] = useState("annual"); // "annual" | "monthly"
   const [openFaq, setOpenFaq] = useState(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const navigation = [
+    ["About", "#about-dsofts"],
+    ["Modules", "#crm-modules"],
+    ["Workflow", "#workflow"],
+    ["Pricing", "#pricing"],
+    ["FAQ", "#faq"],
+  ];
 
   const toggleFaq = (idx) => {
     setOpenFaq(openFaq === idx ? null : idx);
@@ -48,6 +61,7 @@ export default function BrandLanding() {
     <div className="min-h-screen bg-slate-50 text-slate-800 font-sans antialiased selection:bg-blue-600 selection:text-white relative overflow-x-hidden">
       {/* Background Soft Glows */}
       <div className="absolute top-[-100px] left-1/2 -translate-x-1/2 w-[850px] h-[400px] bg-gradient-to-r from-blue-100/70 via-indigo-100/50 to-blue-50/30 blur-[120px] rounded-full pointer-events-none -z-10" />
+      <div className="landing-grid absolute inset-x-0 top-0 h-[780px] pointer-events-none -z-10" />
 
       {/* Top Header Navbar */}
       <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-2xs">
@@ -69,25 +83,12 @@ export default function BrandLanding() {
           </Link>
 
           {/* Center Nav Links */}
-          <nav className="hidden lg:flex items-center gap-8 text-xs font-bold text-slate-600">
-            <a href="#about-dsofts" className="hover:text-blue-600 transition">
-              About Company
-            </a>
-            <a href="#crm-modules" className="hover:text-blue-600 transition">
-              CRM Modules
-            </a>
-            <a href="#workflow" className="hover:text-blue-600 transition">
-              Workflow
-            </a>
-            <a href="#pricing" className="hover:text-blue-600 transition">
-              Pricing Plans
-            </a>
-            <a href="#faq" className="hover:text-blue-600 transition">
-              FAQ
-            </a>
-            <a href="#contact" className="hover:text-blue-600 transition">
-              Contact
-            </a>
+          <nav className="hidden lg:flex items-center gap-7 text-xs font-bold text-slate-600">
+            {navigation.map(([label, href]) => (
+              <a key={href} href={href} className="hover:text-blue-600 transition-colors">
+                {label}
+              </a>
+            ))}
           </nav>
 
           {/* Top Right Corner Blue Login Button */}
@@ -109,8 +110,33 @@ export default function BrandLanding() {
                 <span>Client Login</span>
               </Link>
             )}
+            <button
+              type="button"
+              onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+              className="lg:hidden h-10 w-10 rounded-xl border border-slate-200 bg-white text-slate-700 inline-flex items-center justify-center hover:border-blue-300 hover:text-blue-600 transition"
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              {isMobileMenuOpen ? <X size={19} /> : <Menu size={19} />}
+            </button>
           </div>
         </div>
+        {isMobileMenuOpen && (
+          <nav className="lg:hidden border-t border-slate-100 bg-white px-4 py-4 shadow-lg">
+            <div className="max-w-7xl mx-auto grid grid-cols-2 gap-2">
+              {navigation.map(([label, href]) => (
+                <a
+                  key={href}
+                  href={href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="rounded-xl px-4 py-3 text-xs font-bold text-slate-600 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
+          </nav>
+        )}
       </header>
 
       {/* Hero Section */}
@@ -120,6 +146,11 @@ export default function BrandLanding() {
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-extrabold tracking-wide shadow-2xs">
             <Sparkles size={14} className="text-blue-600" />
             <span>Built For Turnkey Interior Studios, Architecture & Contracting Firms</span>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+            <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_4px_rgba(16,185,129,0.12)]" />
+            Secure cloud workspace for growing teams
           </div>
 
           {/* Main Title */}
@@ -138,11 +169,11 @@ export default function BrandLanding() {
           {/* Hero CTAs */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link
-              to="/login"
+              to={primaryPath}
               className="w-full sm:w-auto px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs uppercase tracking-wider rounded-2xl shadow-xl shadow-blue-600/30 flex items-center justify-center gap-2.5 transition hover:scale-[1.02] cursor-pointer"
             >
               <LogIn size={17} />
-              <span>Login to Client CRM</span>
+              <span>{primaryLabel}</span>
               <ArrowRight size={16} />
             </Link>
 
@@ -272,7 +303,7 @@ export default function BrandLanding() {
                   </span>
                 </div>
 
-                <div className="grid grid-cols-5 gap-2.5 text-center text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 text-center text-xs">
                   {[
                     { title: "Inquiry", desc: "Lead Capture", badge: "Stage 1" },
                     { title: "BOQ & 3D", desc: "Client Approval", badge: "Stage 2" },
@@ -630,7 +661,7 @@ export default function BrandLanding() {
           </div>
 
           {/* Plan 2: Professional Plan (Most Popular) */}
-          <div className="p-8 rounded-3xl bg-white border-2 border-blue-600 shadow-xl shadow-blue-600/10 flex flex-col justify-between space-y-6 relative scale-105">
+          <div className="p-8 rounded-3xl bg-white border-2 border-blue-600 shadow-xl shadow-blue-600/10 flex flex-col justify-between space-y-6 relative md:scale-105">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider flex items-center gap-1.5 shadow-md">
               <Zap size={11} className="fill-amber-300 text-amber-300" />
               <span>Recommended Choice</span>
@@ -762,10 +793,12 @@ export default function BrandLanding() {
               a: "Yes. From the User Management module, administrators can invite and assign specific roles (Sales, Designer, Project Manager, Factory Team, Accountant).",
             },
           ].map((faq, idx) => (
-            <div
+            <button
+              type="button"
               key={idx}
               onClick={() => toggleFaq(idx)}
-              className="p-5 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:border-slate-300 transition shadow-2xs"
+              className="w-full p-5 bg-white border border-slate-200 rounded-2xl cursor-pointer hover:border-blue-300 hover:shadow-sm transition text-left shadow-2xs"
+              aria-expanded={openFaq === idx}
             >
               <div className="flex items-center justify-between font-bold text-sm text-slate-900">
                 <span>{faq.q}</span>
@@ -779,7 +812,7 @@ export default function BrandLanding() {
                   {faq.a}
                 </p>
               )}
-            </div>
+            </button>
           ))}
         </div>
       </section>

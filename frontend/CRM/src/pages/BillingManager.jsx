@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import erpApi from "../services/erpService";
-import { getCurrentTenant, setCurrentTenant } from "../services/authService";
+import { getCurrentTenant, getCurrentUser, setCurrentTenant } from "../services/authService";
 import {
   Zap,
   Check,
@@ -20,6 +20,7 @@ import {
 export default function BillingManager() {
   const [subscription, setSubscription] = useState(null);
   const [plans, setPlans] = useState([]);
+  const [payments, setPayments] = useState([]);
   const [billingCycle, setBillingCycle] = useState("monthly");
   const [loading, setLoading] = useState(true);
   const [upgradingPlan, setUpgradingPlan] = useState(null);
@@ -28,9 +29,10 @@ export default function BillingManager() {
   const fetchSubscriptionData = async () => {
     try {
       setLoading(true);
-      const [subRes, plansRes] = await Promise.all([
+      const [subRes, plansRes, paymentsRes] = await Promise.all([
         erpApi.getSubscriptionStatus().catch(() => null),
         erpApi.getPlans().catch(() => null),
+        erpApi.getSubscriptionPayments().catch(() => null),
       ]);
 
       if (subRes?.data) {
@@ -38,6 +40,9 @@ export default function BillingManager() {
       }
       if (plansRes?.data) {
         setPlans(plansRes.data);
+      }
+      if (paymentsRes?.data) {
+        setPayments(paymentsRes.data);
       }
     } catch (err) {
       console.error("Failed to fetch billing data:", err);
@@ -50,27 +55,61 @@ export default function BillingManager() {
     fetchSubscriptionData();
   }, []);
 
+  const loadRazorpayCheckout = () =>
+    new Promise((resolve, reject) => {
+      if (window.Razorpay) return resolve();
+      const script = document.createElement("script");
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("Unable to load secure Razorpay checkout. Please check your connection and try again."));
+      document.body.appendChild(script);
+    });
+
   const handleUpgrade = async (planId) => {
     try {
       setUpgradingPlan(planId);
       setStatusMessage({ type: "", text: "" });
 
-      const res = await erpApi.changePlan(planId, billingCycle);
-      if (res?.success) {
-        setStatusMessage({
-          type: "success",
-          text: `Workspace upgraded to ${planId} Plan successfully!`,
+      const orderRes = await erpApi.createRazorpayOrder(planId, billingCycle);
+      if (!orderRes?.success || !orderRes.data) throw new Error(orderRes?.message || "Unable to create a payment order.");
+      await loadRazorpayCheckout();
+
+      await new Promise((resolve, reject) => {
+        const user = getCurrentUser() || {};
+        const checkout = new window.Razorpay({
+          key: orderRes.data.keyId,
+          amount: orderRes.data.amount,
+          currency: orderRes.data.currency,
+          name: "Dsofts IT CRM",
+          description: `${orderRes.data.planName} — ${billingCycle === "yearly" ? "Annual" : "Monthly"} subscription`,
+          order_id: orderRes.data.orderId,
+          prefill: { name: user.name || "", email: user.email || "" },
+          theme: { color: "#2563eb" },
+          handler: async (response) => {
+            try {
+              const verification = await erpApi.verifyRazorpayPayment(response);
+              if (!verification?.success) throw new Error(verification?.message || "Payment verification failed.");
+              resolve(verification);
+            } catch (error) {
+              reject(error);
+            }
+          },
+          modal: { ondismiss: () => reject(new Error("Payment was cancelled before completion.")) },
         });
-        // Update cached tenant
-        const currentTenant = getCurrentTenant() || {};
-        currentTenant.plan = planId;
-        setCurrentTenant(currentTenant);
-        await fetchSubscriptionData();
-      }
+        checkout.on("payment.failed", (response) => reject(new Error(response.error?.description || "Razorpay could not complete this payment.")));
+        checkout.open();
+      });
+
+      const currentTenant = getCurrentTenant() || {};
+      currentTenant.plan = planId;
+      setCurrentTenant(currentTenant);
+      setStatusMessage({ type: "success", text: `${planId} plan is now active. Your payment has been verified securely.` });
+      await fetchSubscriptionData();
     } catch (err) {
       setStatusMessage({
         type: "error",
-        text: err.message || "Failed to upgrade subscription plan.",
+        text: err.response?.data?.message || err.message || "Unable to complete the subscription payment.",
       });
     } finally {
       setUpgradingPlan(null);
@@ -388,6 +427,43 @@ export default function BillingManager() {
             );
           })}
         </div>
+      </div>
+
+      {/* Verified subscription payments */}
+      <div className="bg-white rounded-3xl border border-slate-200 shadow-xs overflow-hidden">
+        <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between gap-4">
+          <div>
+            <h2 className="text-sm font-bold text-slate-900">Billing History</h2>
+            <p className="text-xs text-slate-500 mt-0.5">Verified subscription payments for this workspace.</p>
+          </div>
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
+            <CreditCard size={15} className="text-blue-600" />
+            Razorpay secured
+          </div>
+        </div>
+        {payments.length ? (
+          <div className="divide-y divide-slate-100">
+            {payments.map((payment) => (
+              <div key={payment._id} className="px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                    <CheckCircle size={17} />
+                  </div>
+                  <div>
+                    <p className="font-bold text-slate-800">{payment.plan} · {payment.billingCycle === "yearly" ? "Annual" : "Monthly"}</p>
+                    <p className="text-slate-500 mt-0.5">{new Date(payment.paidAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</p>
+                  </div>
+                </div>
+                <div className="sm:text-right">
+                  <p className="font-black text-slate-900">₹{Number(payment.amount).toLocaleString("en-IN")}</p>
+                  <p className="text-[10px] text-slate-400 font-mono">{payment.razorpayPaymentId}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="px-6 py-8 text-center text-xs text-slate-500">No verified subscription payments yet.</div>
+        )}
       </div>
 
       {/* Security & Invoicing Guarantee Footer */}
